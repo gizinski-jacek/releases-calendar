@@ -69,9 +69,45 @@ const Home = () => {
 			}
 		})();
 	}, [selectedYear, selectedMonth, daysInSelectedMonth, excludeMature]);
+
+	const decrementMonth = () => {
+		if (selectedMonth === 0) {
+			setSelectedYear(selectedYear - 1);
+			setSelectedMonth(11);
+		} else {
+			setSelectedMonth(selectedMonth - 1);
+		}
+	};
+
+	const incrementMonth = () => {
+		if (selectedMonth === 11) {
+			setSelectedYear(selectedYear + 1);
+			setSelectedMonth(0);
+		} else {
+			setSelectedMonth(selectedMonth + 1);
+		}
+	};
+
+	const toggleMature = () => {
+		setExcludeMature(!excludeMature);
+	};
+
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-between p-12'>
 			<div className='calendar-month p-4 w-full min-h-full'>
+				<section className='calendar-date-header mb-4 text-xl flex justify-center gap-8'>
+					<span className='cursor-pointer' onClick={decrementMonth}>
+						{'<'}
+					</span>
+					<span>{selectedYear}</span>
+					<span>{moment().month(selectedMonth).format('MMMM')}</span>
+					<span className='cursor-pointer' onClick={incrementMonth}>
+						{'>'}
+					</span>
+					<span className='cursor-pointer' onClick={toggleMature}>
+						+18
+					</span>
+				</section>
 				<ul id='days-of-week' className='day-of-week grid grid-cols-7 gap-4'>
 					{weekdays.map((day) => {
 						return (
