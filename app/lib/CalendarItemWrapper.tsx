@@ -29,19 +29,21 @@ const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 			<>
 				<li
 					key={data.date}
-					className={`bg-gray-800 rounded-md relative min-h-[80px] bg-no-repeat bg-[size:100%_100%] calendar_day
-					${data.isCurrentMonth ? '' : 'opacity-50'} 
-					${data.isCurrentDay ? 'text-yellow-500' : ''} 
+					className={`bg-gray-800 border-[1px] border-purple-700 rounded-md relative min-h-[80px] bg-no-repeat bg-[size:100%_100%] transition-all hover:z-10 hover:scale-[2]
+					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-75'}
 					${data.game_releases.length ? 'cursor-pointer' : ''}
 					${!data.game_releases.length || bgImage ? '' : 'bg-empty'}`}
 					style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
-					<span className='font-bold text-2xl bg-blue-500 px-1 m-0 rounded'>
+					<span
+						className={`font-bold text-2xl px-2 rounded-tl rounded-br leading-[1.8rem] 
+						${data.isCurrentDay ? 'text-yellow-300 bg-blue-700' : 'bg-purple-700'}`}
+					>
 						{data.dayOfMonth}
 					</span>
 					{data.game_releases.length > 0 && (
-						<span className='absolute right-0 bottom-0 bg-green-700 px-1 text-sm rounded'>
+						<span className='absolute right-0 bottom-0 bg-green-700 font-bold px-1 text-sm rounded-tl rounded-br '>
 							{data.game_releases.length}
 						</span>
 					)}
