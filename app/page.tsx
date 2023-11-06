@@ -14,7 +14,7 @@ import {
 	previousMonthDaysObjToDisplay,
 	sortByMetacriticScore,
 } from './lib/utils';
-import CalendarItemWrapper from './lib/CalendarItemWrapper';
+import CalendarItemWrapper from './lib/wrappers/CalendarDayWrapper';
 
 const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -94,8 +94,8 @@ const Home = () => {
 
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-between p-12'>
-			<div className='calendar-month p-4 w-full min-h-full'>
-				<section className='calendar-date-header mb-4 text-xl flex justify-center gap-8'>
+			<div className='calendar-month p-2 w-full flex-1 flex flex-col'>
+				<section className='calendar-date-header mb-2 text-xl flex justify-center gap-8'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
 					</span>
@@ -108,7 +108,7 @@ const Home = () => {
 						+18
 					</span>
 				</section>
-				<ul id='days-of-week' className='day-of-week grid grid-cols-7 gap-4'>
+				<ul className='day-of-week mb-2 grid grid-cols-7 gap-4'>
 					{weekdays.map((day) => {
 						return (
 							<li id={day} key={day}>
@@ -117,7 +117,10 @@ const Home = () => {
 						);
 					})}
 				</ul>
-				<ul id='calendar-days' className='days-grid grid grid-cols-7 gap-4'>
+				<ul
+					id='calendar-days'
+					className='days-grid flex-1 grid grid-cols-7 gap-4'
+				>
 					{calendarData?.map((item) => (
 						<CalendarItemWrapper key={item.date} data={item} />
 					))}
