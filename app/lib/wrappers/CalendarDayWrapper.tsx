@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DayData } from './types';
-import Modal from './Modal';
+import { DayData } from '../types';
+import Modal from '../Modal';
+import GameDetailsWrapper from './GameDetailsWrapper';
 
 const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 	const [bgImage, setBgImage] = useState<string | null | undefined>(null);
@@ -50,15 +51,9 @@ const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 				</li>
 				{showModal && data.game_releases.length && (
 					<Modal closeModal={closeModal}>
-						{data.game_releases?.map((item) => {
-							return (
-								<div key={item.id}>
-									<div>{item.released}</div>
-									<div>{item.name}</div>
-									<div>{item.metacritic}</div>
-								</div>
-							);
-						})}
+						{data.game_releases?.map((game) => (
+							<GameDetailsWrapper key={game.id} game={game} />
+						))}
 					</Modal>
 				)}
 			</>
