@@ -3,27 +3,23 @@
 @tailwind utilities;
 
 :root {
-	--foreground-rgb: 0, 0, 0;
-	--background-start-rgb: 214, 219, 220;
-	--background-end-rgb: 255, 255, 255;
+	--foreground-rgb: rgb(0, 0, 0);
+	--background-start-rgb: rgb(215, 220, 220);
+	--background-end-rgb: rgb(255, 255, 255);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--foreground-rgb: 255, 255, 255;
-		--background-start-rgb: 0, 0, 0;
-		--background-end-rgb: 0, 0, 0;
+		--foreground-rgb: rgb(255, 255, 255);
+		--background-start-rgb: hsl(0, 0%, 0%);
+		--background-end-rgb: rgb(0, 0, 0);
 	}
 }
 
 body {
-	color: rgb(var(--foreground-rgb));
-	background: linear-gradient(
-			to bottom,
-			transparent,
-			rgb(var(--background-end-rgb))
-		)
-		rgb(var(--background-start-rgb));
+	color: var(--foreground-rgb);
+	background: linear-gradient(to bottom, transparent, var(--background-end-rgb))
+		var(--background-start-rgb);
 }
 
 .bg-empty:after {
@@ -38,6 +34,16 @@ body {
 	font-size: 2em;
 	line-height: 1em;
 	border-radius: 50%;
-	padding: 0.15em 0.335em 0.1em 0.335em;
+	padding: 0.15rem 0.55rem 0.1rem 0.55rem;
+	border: 2px solid;
+}
+
+.modal-close-btn:after {
+	content: 'X';
+	font-weight: bold;
+	text-align: center;
+	font-size: 0.8em;
+	border-radius: 50%;
+	padding: 0.05rem 0.3rem 0.05rem 0.3rem;
 	border: 2px solid;
 }
