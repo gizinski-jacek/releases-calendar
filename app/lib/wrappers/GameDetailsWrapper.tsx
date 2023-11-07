@@ -1,7 +1,5 @@
-import Image from 'next/image';
 import { GameData } from '../types';
 import { useState } from 'react';
-import Modal from '../Modal';
 import Gallery from './Gallery';
 
 interface Props {
@@ -9,50 +7,38 @@ interface Props {
 }
 
 const GameDetailsWrapper = ({ game }: Props) => {
-	const [galleryOpen, setGalleryOpen] = useState<boolean>(false);
-
-	const openGallery = () => {
-		setGalleryOpen(true);
-	};
-
-	const closeGallery = () => {
-		setGalleryOpen(false);
-	};
-
 	return (
-		<div className='flex bg-gray-800'>
-			<div className='flex-1 p-2'>
-				<div className='mb-4 font-bold'>{game.name}</div>
+		<div className='flex gap-4 bg-gray-800'>
+			<div className='min-w-[50%] flex-1 shrink-0 grow p-2'>
+				<div className='mb-4 text-2xl font-bold'>{game.name}</div>
 				<div className='grid grid-cols-2 gap-x-12 gap-y-4'>
 					<div>
-						<div className='font-bold'>Release Date</div>
+						<div className='font-bold text-gray-400 italic'>Release Date</div>
 						<div>{game.released}</div>
 					</div>
 					{game.metacritic && (
 						<div>
-							<div className='font-bold'>Metacritic Score</div>
+							<div className='font-bold text-gray-400 italic'>
+								Metacritic Score
+							</div>
 							<div>{game.metacritic}</div>
 						</div>
 					)}
 					{game.esrb_rating && (
 						<div>
-							<div className='font-bold'>ESRB Rating</div>
+							<div className='font-bold text-gray-400 italic'>ESRB Rating</div>
 							<div>{game.esrb_rating.name}</div>
 						</div>
 					)}
 					{game.genres?.length && (
 						<div>
-							<div className='font-bold'>Genres</div>
-							<div>
-								{game.genres.map((genre) => (
-									<div key={genre.id}>{genre.name}</div>
-								))}
-							</div>
+							<div className='font-bold text-gray-400 italic'>Genres</div>
+							<div>{game.genres.map((genre) => genre.name).join(', ')}</div>
 						</div>
 					)}
 					{game.platforms?.length && (
 						<div>
-							<div className='font-bold'>Platforms</div>
+							<div className='font-bold text-gray-400 italic'>Platforms</div>
 							<div>
 								{game.platforms
 									.sort((a, b) =>
@@ -65,7 +51,7 @@ const GameDetailsWrapper = ({ game }: Props) => {
 					)}
 					{game.stores?.length && (
 						<div>
-							<div className='font-bold'>Stores</div>
+							<div className='font-bold text-gray-400 italic'>Stores</div>
 							<div>
 								{game.stores
 									.sort((a, b) => a.store.name.localeCompare(b.store.name))
@@ -75,40 +61,12 @@ const GameDetailsWrapper = ({ game }: Props) => {
 						</div>
 					)}
 				</div>
-				{game.short_screenshots?.length && (
-					<div className='mt-4 pb-3 flex overflow-scroll '>
-						{game.short_screenshots.map((pic) => (
-							<>
-								<Image
-									key={pic.id}
-									src={pic.image}
-									alt='Image'
-									width={200}
-									height={100}
-									className='cursor-pointer'
-									onClick={openGallery}
-								/>
-								{galleryOpen && game.short_screenshots?.length && (
-									<Modal
-										closeModal={closeGallery}
-										fullH={true}
-										bgColor='bg-black'
-										borderC='border-gray-300'
-									>
-										<Gallery gallery={game.short_screenshots} />
-									</Modal>
-								)}
-							</>
-						))}
-					</div>
-				)}
 			</div>
-			<Image
-				src={game.background_image || ''}
-				alt='Cover Art'
-				width={600}
-				height={375}
-			/>
+			{game.short_screenshots && (
+				<div className='flex-none basis-[600px] shrink grow-0 h-fit'>
+					<Gallery gallery={game.short_screenshots} />
+				</div>
+			)}
 		</div>
 	);
 };
