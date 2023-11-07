@@ -15,10 +15,12 @@ import {
 	sortByMetacriticScore,
 } from './lib/utils';
 import CalendarItemWrapper from './lib/wrappers/CalendarDayWrapper';
+import LoadingSpinner from './components/LoadingSpinner';
 
 const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const Home = () => {
+	const [fetching, setFetching] = useState<boolean>(true);
 	const [excludeMature, setExcludeMature] = useState<boolean>(true);
 	const [selectedYear, setSelectedYear] = useState<number>(
 		moment().utc().year()
@@ -42,6 +44,7 @@ const Home = () => {
 	useEffect(() => {
 		(async () => {
 			try {
+				setFetching(true);
 				const res = await axios.post('/api', {
 					year: selectedYear,
 					month: selectedMonth,
@@ -63,9 +66,11 @@ const Home = () => {
 					...nextMonthDaysObjToDisplay(selectedYear, selectedMonth),
 				];
 				setCalendarData(calendarData);
+				setFetching(false);
 			} catch (error) {
 				console.error(error);
 				console.error('API error');
+				setFetching(false);
 			}
 		})();
 	}, [selectedYear, selectedMonth, daysInSelectedMonth, excludeMature]);
@@ -93,7 +98,8 @@ const Home = () => {
 	};
 
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-between p-12'>
+		<main className='flex min-h-screen flex-col items-center justify-between p-12 relative'>
+			{fetching && <LoadingSpinner />}
 			<div className='p-2 w-full flex-1 flex flex-col'>
 				<section className='mb-2 text-xl flex justify-center gap-8'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
