@@ -94,8 +94,8 @@ const Home = () => {
 
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-between p-12'>
-			<div className='calendar-month p-2 w-full flex-1 flex flex-col'>
-				<section className='calendar-date-header mb-2 text-xl flex justify-center gap-8'>
+			<div className='p-2 w-full flex-1 flex flex-col'>
+				<section className='mb-2 text-xl flex justify-center gap-8'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
 					</span>
@@ -108,19 +108,12 @@ const Home = () => {
 						+18
 					</span>
 				</section>
-				<ul className='day-of-week mb-2 grid grid-cols-7 gap-4'>
+				<ul className='mb-2 grid grid-cols-7 gap-4'>
 					{weekdays.map((day) => {
-						return (
-							<li id={day} key={day}>
-								{day}
-							</li>
-						);
+						return <li key={day}>{day}</li>;
 					})}
 				</ul>
-				<ul
-					id='calendar-days'
-					className='days-grid flex-1 grid grid-cols-7 gap-4'
-				>
+				<ul className='flex-1 grid grid-cols-7 gap-4'>
 					{calendarData?.map((item) => (
 						<CalendarItemWrapper key={item.date} data={item} />
 					))}

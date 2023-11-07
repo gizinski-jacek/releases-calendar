@@ -71,7 +71,6 @@ const Gallery = ({ gallery }: Props) => {
 						return (
 							<span
 								key={item.id}
-								id={`${index}`}
 								className={`inline transition-all h-4 w-4 bg-gray-500 hover:bg-gray-300 rounded-lg cursor-pointer ${
 									index === slideIndex ? 'bg-white hover:bg-white' : ''
 								}`}
