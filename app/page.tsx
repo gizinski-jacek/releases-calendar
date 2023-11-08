@@ -1,17 +1,19 @@
 'use client';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { GroupedByDay } from './lib/types';
+import { GameData, GroupedByDay } from './lib/types';
 import {
 	daysInMonthToObject,
 	filterMature,
 	getDateInString,
 	getDaysInMonth,
-	groupByDay,
-	nextMonthDaysObjToDisplay,
-	previousMonthDaysObjToDisplay,
+	getDaysInNextMonth,
+	getDaysInPrevMonth,
+	groupByDate,
+	nextMonthDaysToObj,
+	prevMonthDaysToObj,
 	sortByMetacriticScore,
 } from './lib/utils';
 import CalendarItemWrapper from './lib/wrappers/CalendarDayWrapper';
@@ -32,9 +34,9 @@ const Home = () => {
 		getDaysInMonth(selectedYear, selectedMonth)
 	);
 	const [calendarData, setCalendarData] = useState<GroupedByDay>([
-		...previousMonthDaysObjToDisplay(selectedYear, selectedMonth),
+		...prevMonthDaysToObj(selectedYear, selectedMonth),
 		...[...daysInMonthToObject(selectedYear, selectedMonth)],
-		...nextMonthDaysObjToDisplay(selectedYear, selectedMonth),
+		...nextMonthDaysToObj(selectedYear, selectedMonth),
 	]);
 
 	useEffect(() => {
@@ -45,31 +47,36 @@ const Home = () => {
 		(async () => {
 			try {
 				setFetching(true);
-				const res = await axios.post('/api', {
+				const startDate = getDateInString(
+					selectedYear,
+					selectedMonth,
+					moment.utc().date(1).date() -
+						getDaysInPrevMonth(selectedYear, selectedMonth)
+				);
+				const endDate = getDateInString(
+					selectedYear,
+					selectedMonth,
+					daysInSelectedMonth + getDaysInNextMonth(selectedYear, selectedMonth)
+				);
+				const res: AxiosResponse<GameData[]> = await axios.post('/api', {
 					year: selectedYear,
 					month: selectedMonth,
-					date: `${getDateInString(
-						selectedYear,
-						selectedMonth
-					)},${getDateInString(
-						selectedYear,
-						selectedMonth,
-						daysInSelectedMonth
-					)}`,
+					date: `${startDate},${endDate}`,
 				});
 				const filtered = excludeMature ? filterMature(res.data) : res.data;
-				const grouped = groupByDay(filtered, selectedYear, selectedMonth);
-				const sorted = sortByMetacriticScore(grouped);
-				const calendarData = [
-					...previousMonthDaysObjToDisplay(selectedYear, selectedMonth),
-					...sorted,
-					...nextMonthDaysObjToDisplay(selectedYear, selectedMonth),
-				];
-				setCalendarData(calendarData);
+				const grouped = groupByDate(filtered, selectedYear, selectedMonth);
+				const sortedScores = sortByMetacriticScore(grouped);
+				const sortedDates = sortedScores.sort((a, b) =>
+					a.date.localeCompare(b.date)
+				);
+				setCalendarData(sortedDates);
 				setFetching(false);
 			} catch (error) {
-				console.error(error);
-				console.error('API error');
+				if (axios.isAxiosError(error)) {
+					console.log('API error: ', error.message);
+				} else {
+					console.log('An unexpected API error occurred: ', error);
+				}
 				setFetching(false);
 			}
 		})();
