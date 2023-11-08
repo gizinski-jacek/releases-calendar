@@ -31,7 +31,7 @@ const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 				<li
 					key={data.date}
 					className={`shadow shadow-gray-500 bg-gray-800 border-[1px] border-purple-700 rounded-md relative min-h-[80px] bg-no-repeat bg-[size:100%_100%] transition-all hover:z-10 hover:scale-150
-					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-75'}
+					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
 					${data.game_releases.length ? 'cursor-pointer' : ''}
 					${!data.game_releases.length || bgImage ? '' : 'bg-empty'}`}
 					style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
