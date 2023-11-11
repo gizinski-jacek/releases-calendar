@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import querystring from 'querystring';
+import { GameData } from '../lib/types';
 
 export async function POST(request: Request) {
 	try {
@@ -22,16 +23,28 @@ export async function POST(request: Request) {
 			ordering: 'metacritic',
 			dates: date,
 		});
-		let results = [] as any;
+		let results = [] as GameData[];
 		let nextPage: string | null = `${process.env.API_URI}?${query}`;
 		while (nextPage) {
-			const res: any = await axios.get(nextPage);
+			const res: AxiosResponse<{
+				count: number;
+				results: GameData[];
+				previous: string | null;
+				next: string | null;
+			}> = await axios.get(nextPage);
 			results = [...results, ...res.data.results];
 			nextPage = res.data.next;
 		}
 		return new Response(JSON.stringify(results), { status: 200 });
 	} catch (error: any) {
-		console.log(error);
-		return new Response('API Error', { status: 500 });
+		if (axios.isAxiosError(error)) {
+			console.log('RAWG API Error: ', error.message);
+			return new Response(error.message, { status: error.status || 500 });
+		} else {
+			console.log('An unexpected RAWG API Error occurred: ', error);
+			return new Response('An unexpected RAWG API Error occurred', {
+				status: 500,
+			});
+		}
 	}
 }
