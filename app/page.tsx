@@ -121,15 +121,79 @@ const Home = () => {
 						+18
 					</span>
 				</section>
-				<ul className='mb-2 grid grid-cols-7 gap-4'>
+				<ul className='mb-2 grid grid-cols-28 gap-4'>
 					{weekdays.map((day) => {
-						return <li key={day}>{day}</li>;
+						return (
+							<li key={day} className='col-span-4'>
+								{day}
+							</li>
+						);
 					})}
 				</ul>
-				<ul className='flex-1 grid grid-cols-7 gap-4'>
-					{calendarData?.map((item) => (
-						<CalendarItemWrapper key={item.date} data={item} />
-					))}
+				<ul className='flex-1 grid grid-cols-28 gap-4'>
+					{calendarData?.map((item, index, array) => {
+						let styleClass = 'col-span-4';
+						if (item.game_releases.length > 0) {
+							// Days with game releases
+							if ((index + 1) % 7 > 1) {
+								// Days 2-6 of the week
+								if (
+									item.game_releases.length > 1 &&
+									array[index + 1].game_releases.length === 0 &&
+									array[index - 1].game_releases.length === 0 &&
+									array[index - 2].game_releases.length === 0 &&
+									item.game_releases.filter((item) => item.background_image)
+										.length > 1
+								) {
+									styleClass = 'col-span-8';
+								} else if (
+									array[index + 1].game_releases.length === 0 ||
+									(array[index - 1].game_releases.length === 0 &&
+										array[index - 2].game_releases.length === 0)
+								) {
+									styleClass = 'col-span-6';
+								}
+							} else if (index === 0 || (index + 1) % 7 === 1) {
+								// First day the week
+								if (array[index + 1].game_releases.length === 0) {
+									styleClass = 'col-span-6';
+								}
+							} else if ((index + 1) % 7 === 0) {
+								// Last day the week
+								if (
+									array[index - 1].game_releases.length === 0 &&
+									array[index - 2].game_releases.length === 0
+								) {
+									styleClass = 'col-span-6';
+								}
+							}
+						} else if (item.game_releases.length === 0) {
+							// Days without game releases
+							if ((index + 1) % 7 > 1) {
+								if (
+									array[index + 1].game_releases.length > 0 ||
+									array[index - 1].game_releases.length > 0
+								) {
+									styleClass = 'col-span-2';
+								}
+							} else if (index + 1 === 1 || (index + 1) % 7 === 1) {
+								if (array[index + 1].game_releases.length > 0) {
+									styleClass = 'col-span-2';
+								}
+							} else if ((index + 1) % 7 === 0) {
+								if (array[index - 1].game_releases.length > 0) {
+									styleClass = 'col-span-2';
+								}
+							}
+						}
+						return (
+							<CalendarItemWrapper
+								key={item.date}
+								data={item}
+								styleClass={styleClass}
+							/>
+						);
+					})}
 				</ul>
 			</div>
 		</main>
