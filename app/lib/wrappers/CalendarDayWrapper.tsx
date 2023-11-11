@@ -2,9 +2,19 @@ import { useEffect, useState } from 'react';
 import { DayData } from '../types';
 import Modal from '../Modal';
 import GameDetailsWrapper from './GameDetailsWrapper';
+import Image from 'next/image';
+import bgEmpty from '/public/empty-background.png';
 
-const CalendarItemWrapper = ({ data }: { data: DayData }) => {
+interface Props {
+	data: DayData;
+	styleClass?: string;
+}
+
+const CalendarItemWrapper = ({ data, styleClass = '' }: Props) => {
 	const [bgImage, setBgImage] = useState<string | null | undefined>(null);
+	const [bgImageSecondary, setBgImageSecondary] = useState<
+		string | null | undefined
+	>(null);
 	const [showModal, setShowModal] = useState<boolean>(false);
 
 	const openModal = () => {
@@ -21,8 +31,16 @@ const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 				data.game_releases.find((item) => item.background_image)
 					?.background_image
 			);
+			if (data.game_releases.length > 1 && styleClass.includes('col-span-8')) {
+				const bgImagesArray = data.game_releases.filter(
+					(item) => item.background_image
+				);
+				if (bgImagesArray.length > 1) {
+					setBgImageSecondary(bgImagesArray[1].background_image);
+				}
+			}
 		}
-	}, [data]);
+	}, [data, styleClass]);
 
 	return (
 		data &&
@@ -30,21 +48,50 @@ const CalendarItemWrapper = ({ data }: { data: DayData }) => {
 			<>
 				<li
 					key={data.date}
-					className={`shadow shadow-gray-500 bg-gray-800 border-[1px] border-purple-700 rounded-md relative min-h-[80px] bg-no-repeat bg-[size:100%_100%] transition-all hover:z-10 hover:scale-150
+					className={`flex gap-[1px] h-28 shadow shadow-gray-500 bg-purple-800 border-2 border-purple-700 rounded-md relative bg-no-repeat bg-[size:100%_100%] transition-all 
 					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
-					${data.game_releases.length ? 'cursor-pointer' : ''}
-					${!data.game_releases.length || bgImage ? '' : 'bg-empty'}`}
-					style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
+					${data.game_releases.length ? 'cursor-pointer hover:z-10 hover:scale-150' : ''}
+					${styleClass}`}
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
+					{data.game_releases.length > 1 &&
+					styleClass.includes('col-span-8') ? (
+						<>
+							<Image
+								src={bgImage || bgEmpty}
+								alt='Game cover 1'
+								width={400}
+								height={225}
+								className={`w-full h-full rounded-tl rounded-bl
+								${!bgImage ? 'bg-empty' : ''}`}
+							/>
+							<Image
+								src={bgImageSecondary || bgEmpty}
+								alt='Game cover 2'
+								width={400}
+								height={225}
+								className={`w-full h-full rounded-tr rounded-br
+								${!bgImageSecondary ? 'bg-empty' : ''}`}
+							/>
+						</>
+					) : (
+						<Image
+							src={bgImage || bgEmpty}
+							alt='Game cover'
+							width={400}
+							height={225}
+							className={`w-full h-full rounded
+							${!bgImage ? 'bg-empty' : ''}`}
+						/>
+					)}
 					<span
-						className={`font-bold text-2xl px-2 rounded-tl rounded-br leading-[1.8rem] 
+						className={`absolute top-0 left-0 font-bold text-2xl px-1 rounded-tl rounded-br leading-[1.8rem]
 						${data.isCurrentDay ? 'text-yellow-300 bg-blue-700' : 'bg-purple-700'}`}
 					>
 						{data.dayOfMonth}
 					</span>
 					{data.game_releases.length > 0 && (
-						<span className='absolute right-0 bottom-0 bg-green-700 font-bold px-1 text-sm rounded-tl rounded-br '>
+						<span className='absolute bottom-0 right-0 bg-green-700 font-bold px-1 text-sm rounded-tl rounded-br'>
 							{data.game_releases.length}
 						</span>
 					)}
