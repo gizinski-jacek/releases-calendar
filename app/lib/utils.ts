@@ -1,14 +1,18 @@
 import moment from 'moment';
 import { GameData, GroupedByDay } from './types';
 
-export const filterMature = (data: GameData[]): GameData[] => {
+export const filterMature = (data: GroupedByDay): GroupedByDay => {
 	const filterTags = ['sexual-content', 'nsfw'];
-	const filtered = data.filter((item) => {
-		if (!item.tags) return false;
-		if (item.tags.find((tag) => filterTags.includes(tag.slug))) return false;
-		return true;
+
+	const array = data.map((day) => {
+		const filtered = day.game_releases.filter((item) => {
+			if (!item.tags) return false;
+			if (item.tags.find((tag) => filterTags.includes(tag.slug))) return false;
+			return true;
+		});
+		return { ...day, game_releases: filtered };
 	});
-	return filtered;
+	return array;
 };
 
 export const groupByDate = (
@@ -100,7 +104,7 @@ export const prevMonthDaysToObj = (
 			game_releases: [] as GameData[],
 		};
 	});
-	return arr;
+	return arr.sort((a, b) => a.dayOfMonth - b.dayOfMonth);
 };
 
 export const daysInMonthToObject = (
@@ -117,7 +121,7 @@ export const daysInMonthToObject = (
 			game_releases: [] as GameData[],
 		};
 	});
-	return arr;
+	return arr.sort((a, b) => a.dayOfMonth - b.dayOfMonth);
 };
 
 export const nextMonthDaysToObj = (
@@ -134,5 +138,5 @@ export const nextMonthDaysToObj = (
 			game_releases: [] as GameData[],
 		};
 	});
-	return arr;
+	return arr.sort((a, b) => a.dayOfMonth - b.dayOfMonth);
 };
