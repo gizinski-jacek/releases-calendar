@@ -19,7 +19,15 @@ import {
 import CalendarItemWrapper from './lib/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
 
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekdays = [
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday',
+	'Sunday',
+];
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
@@ -38,6 +46,7 @@ const Home = () => {
 		...[...daysInMonthToObject(selectedYear, selectedMonth)],
 		...nextMonthDaysToObj(selectedYear, selectedMonth),
 	]);
+	const [highlightWeekDay, setHighlightWeekDay] = useState<number | null>(null);
 
 	useEffect(() => {
 		setDaysInSelectedMonth(getDaysInMonth(selectedYear, selectedMonth));
@@ -63,8 +72,7 @@ const Home = () => {
 					month: selectedMonth,
 					date: `${startDate},${endDate}`,
 				});
-				const filtered = excludeMature ? filterMature(res.data) : res.data;
-				const grouped = groupByDate(filtered, selectedYear, selectedMonth);
+				const grouped = groupByDate(res.data, selectedYear, selectedMonth);
 				const sortedScores = sortByMetacriticScore(grouped);
 				const sortedDates = sortedScores.sort((a, b) =>
 					a.date.localeCompare(b.date)
@@ -80,7 +88,7 @@ const Home = () => {
 				setFetching(false);
 			}
 		})();
-	}, [selectedYear, selectedMonth, daysInSelectedMonth, excludeMature]);
+	}, [selectedYear, selectedMonth, daysInSelectedMonth]);
 
 	const decrementMonth = () => {
 		if (selectedMonth === 0) {
@@ -104,11 +112,17 @@ const Home = () => {
 		setExcludeMature(!excludeMature);
 	};
 
+	const changeHighlithedWeekDay = (value: number) => {
+		highlightWeekDay === value
+			? setHighlightWeekDay(null)
+			: setHighlightWeekDay(value);
+	};
+
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-between p-12 relative'>
+		<main className='flex min-h-screen flex-col items-center justify-between py-6 px-12 relative'>
 			{fetching && <LoadingSpinner />}
-			<div className='p-2 w-full flex-1 flex flex-col'>
-				<section className='mb-2 text-xl flex justify-center gap-8'>
+			<div className='mb-4 w-full flex-1 flex flex-col'>
+				<section className='text-xl flex justify-center gap-8 select-none'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
 					</span>
@@ -121,79 +135,99 @@ const Home = () => {
 						+18
 					</span>
 				</section>
-				<ul className='mb-2 grid grid-cols-28 gap-4'>
-					{weekdays.map((day) => {
+				<ul className='my-4 grid grid-cols-28 gap-4'>
+					{weekdays.map((day, i) => {
 						return (
-							<li key={day} className='col-span-4'>
+							<li
+								key={day}
+								className={`col-span-4 text-center border-2 border-gray-500 font-bold shadow shadow-gray-500 bg-blue-700 rounded cursor-pointer select-none
+								${highlightWeekDay === i ? 'shadow-lg border-white bg-blue-600' : ''}`}
+								onClick={() => changeHighlithedWeekDay(i)}
+							>
 								{day}
 							</li>
 						);
 					})}
 				</ul>
 				<ul className='flex-1 grid grid-cols-28 gap-4'>
-					{calendarData?.map((item, index, array) => {
-						let styleClass = 'col-span-4';
-						if (item.game_releases.length > 0) {
-							// Days with game releases
-							if ((index + 1) % 7 > 1) {
-								// Days 2-6 of the week
-								if (
-									item.game_releases.length > 1 &&
-									array[index + 1].game_releases.length === 0 &&
-									array[index - 1].game_releases.length === 0 &&
-									array[index - 2].game_releases.length === 0 &&
-									item.game_releases.filter((item) => item.background_image)
-										.length > 1
-								) {
-									styleClass = 'col-span-8';
-								} else if (
-									array[index + 1].game_releases.length === 0 ||
-									(array[index - 1].game_releases.length === 0 &&
-										array[index - 2].game_releases.length === 0)
-								) {
-									styleClass = 'col-span-6';
+					{calendarData &&
+						(excludeMature ? filterMature(calendarData) : calendarData).map(
+							(item, index, array) => {
+								let styleClass = 'col-span-4';
+								if (item.game_releases.length > 0) {
+									// Days with game releases
+									if ((index + 1) % 7 > 1) {
+										// Days 2-6 of the week
+										if (
+											item.game_releases.length > 1 &&
+											array[index + 1].game_releases.length === 0 &&
+											array[index - 1].game_releases.length === 0 &&
+											array[index - 2].game_releases.length === 0 &&
+											item.game_releases.filter((item) => item.background_image)
+												.length > 1
+										) {
+											styleClass = 'col-span-8';
+										} else if (
+											array[index + 1].game_releases.length === 0 ||
+											(array[index - 1].game_releases.length === 0 &&
+												array[index - 2].game_releases.length === 0)
+										) {
+											styleClass = 'col-span-6';
+										}
+									} else if (index === 0 || (index + 1) % 7 === 1) {
+										// First day the week
+										if (array[index + 1].game_releases.length === 0) {
+											styleClass = 'col-span-6';
+										}
+									} else if ((index + 1) % 7 === 0) {
+										// Last day the week
+										if (
+											array[index - 1].game_releases.length === 0 &&
+											array[index - 2].game_releases.length === 0
+										) {
+											styleClass = 'col-span-6';
+										}
+									}
+								} else if (item.game_releases.length === 0) {
+									// Days without game releases
+									if ((index + 1) % 7 > 1) {
+										if (
+											array[index + 1].game_releases.length > 0 ||
+											array[index - 1].game_releases.length > 0
+										) {
+											styleClass = 'col-span-2';
+										}
+									} else if (index + 1 === 1 || (index + 1) % 7 === 1) {
+										if (array[index + 1].game_releases.length > 0) {
+											styleClass = 'col-span-2';
+										}
+									} else if ((index + 1) % 7 === 0) {
+										if (array[index - 1].game_releases.length > 0) {
+											styleClass = 'col-span-2';
+										}
+									}
 								}
-							} else if (index === 0 || (index + 1) % 7 === 1) {
-								// First day the week
-								if (array[index + 1].game_releases.length === 0) {
-									styleClass = 'col-span-6';
-								}
-							} else if ((index + 1) % 7 === 0) {
-								// Last day the week
-								if (
-									array[index - 1].game_releases.length === 0 &&
-									array[index - 2].game_releases.length === 0
-								) {
-									styleClass = 'col-span-6';
-								}
+								return (
+									<CalendarItemWrapper
+										key={item.date}
+										data={item}
+										styleClass={styleClass}
+										highlight={
+											highlightWeekDay
+												? (index + 1) % (highlightWeekDay! + 1) === 0
+												: undefined
+										}
+										translateOnHover={
+											index + 1 === 1 || (index + 1) % 7 === 1
+												? 'hover-translate-child-right'
+												: (index + 1) % 7 === 0
+												? 'hover-translate-child-left'
+												: undefined
+										}
+									/>
+								);
 							}
-						} else if (item.game_releases.length === 0) {
-							// Days without game releases
-							if ((index + 1) % 7 > 1) {
-								if (
-									array[index + 1].game_releases.length > 0 ||
-									array[index - 1].game_releases.length > 0
-								) {
-									styleClass = 'col-span-2';
-								}
-							} else if (index + 1 === 1 || (index + 1) % 7 === 1) {
-								if (array[index + 1].game_releases.length > 0) {
-									styleClass = 'col-span-2';
-								}
-							} else if ((index + 1) % 7 === 0) {
-								if (array[index - 1].game_releases.length > 0) {
-									styleClass = 'col-span-2';
-								}
-							}
-						}
-						return (
-							<CalendarItemWrapper
-								key={item.date}
-								data={item}
-								styleClass={styleClass}
-							/>
-						);
-					})}
+						)}
 				</ul>
 			</div>
 		</main>
