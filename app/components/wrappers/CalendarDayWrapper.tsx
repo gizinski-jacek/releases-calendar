@@ -87,7 +87,7 @@ const CalendarItemWrapper = ({
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
 					<div
-						className={`flex gap-[1px] h-28 shadow shadow-gray-500 bg-purple-800 border-2 border-purple-700 rounded-md relative bg-no-repeat bg-[size:100%_100%] transition-all select-none
+						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 shadow shadow-gray-500 bg-purple-800 border-2 border-purple-700 rounded-md relative bg-no-repeat bg-[size:100%_100%] transition-all select-none
 						${highlight ? 'shadow-lg border-white' : ''}
 						${translateOnHover ? 'translated-child' : ''}`}
 					>
@@ -125,13 +125,13 @@ const CalendarItemWrapper = ({
 							/>
 						)}
 						<span
-							className={`absolute top-0 left-0 font-bold text-2xl px-1 rounded-tl rounded-br leading-[1.8rem]
+							className={`absolute top-0 left-0 font-bold text-sm md:text-base lg:text-lg xl:text-xl ps-[1px] pe-[4px] pb-[2px] leading-5 rounded-tl rounded-br
 						${data.isCurrentDay ? 'text-yellow-300 bg-blue-700' : 'bg-purple-700'}`}
 						>
 							{data.dayOfMonth}
 						</span>
 						{data.game_releases.length > 0 && (
-							<span className='absolute bottom-0 right-0 bg-green-700 font-bold px-1 text-sm rounded-tl rounded-br'>
+							<span className='absolute bottom-0 right-0 bg-green-700 font-bold text-xs md:text-sm lg:text-base xl:text-lg px-[2px] md:px-1 rounded-tl rounded-br'>
 								{data.game_releases.length}
 							</span>
 						)}
