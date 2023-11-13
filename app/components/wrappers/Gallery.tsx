@@ -66,7 +66,7 @@ const Gallery = ({ gallery }: Props) => {
 					);
 				})}
 				<div
-					className='absolute top-[50%] translate-y-[-50%] right-0 border-[1px] border-gray-600 hover:border-gray-400 active:border-white text-gray-500 hover:text-white active:text-white text-sm md:text-base lg:text-lg p-2 md:p-3 lg:p-4 box-border cursor-pointer select-none transition-all bg-black/50 hover:bg-black/75 rounded-tl-md rounded-bl-md'
+					className='absolute top-[50%] translate-y-[-50%] right-0 border-[1px] border-gray-600 hover:border-gray-400 active:border-white text-gray-500 hover:text-white active:text-white text-sm md:text-base lg:text-lg p-2 md:p-3 lg:p-4 box-border cursor-pointer select-none transition-all bg-black/50 hover:bg-black/75 active:bg-black/90 text-white rounded-tl-md rounded-bl-md'
 					onClick={nextSlide}
 				>
 					&#10095;
