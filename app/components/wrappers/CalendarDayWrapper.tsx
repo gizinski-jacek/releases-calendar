@@ -4,6 +4,7 @@ import Modal from '../Modal';
 import GameDetailsWrapper from './GameDetailsWrapper';
 import Image from 'next/image';
 import bgEmpty from '/public/empty-background.png';
+import { filterTags } from '@/app/lib/data';
 
 interface Props {
 	data: DayData;
@@ -21,10 +22,14 @@ const CalendarItemWrapper = ({
 	highlight = false,
 	translateOnHover = undefined,
 }: Props) => {
-	const [bgImage, setBgImage] = useState<string | null | undefined>(null);
-	const [bgImageSecondary, setBgImageSecondary] = useState<
-		string | null | undefined
-	>(null);
+	const [firstItemData, setFirstItemData] = useState<{
+		src: string;
+		mature: boolean;
+	} | null>();
+	const [secondItemData, setSecondItemData] = useState<{
+		src: string;
+		mature: boolean;
+	} | null>();
 	const [showModal, setShowModal] = useState<boolean>(false);
 
 	const openModal = () => {
@@ -37,19 +42,27 @@ const CalendarItemWrapper = ({
 
 	useEffect(() => {
 		setShowModal(false);
-		setBgImage(null);
-		setBgImageSecondary(null);
+		setFirstItemData(null);
+		setSecondItemData(null);
 		if (data.game_releases.length) {
-			setBgImage(
-				data.game_releases.find((item) => item.background_image)
-					?.background_image
-			);
+			const item = data.game_releases.find((item) => item.background_image);
+			setFirstItemData({
+				src: item?.background_image || '',
+				mature:
+					!!item?.tags?.find((tag) => filterTags.includes(tag.slug)) || false,
+			});
 			if (data.game_releases.length > 1 && styleClass.includes('col-span-8')) {
-				const bgImagesArray = data.game_releases.filter(
+				const itemArray = data.game_releases.filter(
 					(item) => item.background_image
 				);
-				if (bgImagesArray.length > 1) {
-					setBgImageSecondary(bgImagesArray[1].background_image);
+				if (itemArray.length > 1) {
+					setSecondItemData({
+						src: itemArray[1].background_image || '',
+						mature:
+							!!itemArray[1].tags?.find((tag) =>
+								filterTags.includes(tag.slug)
+							) || false,
+					});
 				}
 			}
 		}
@@ -82,30 +95,33 @@ const CalendarItemWrapper = ({
 						styleClass.includes('col-span-8') ? (
 							<>
 								<Image
-									src={bgImage || bgEmpty}
-									alt='Game cover 1'
+									src={firstItemData?.src || bgEmpty}
+									alt='Game 1 cover'
 									width={400}
 									height={225}
 									className={`w-full h-full rounded-tl rounded-bl
-								${!bgImage ? 'bg-empty' : ''}`}
+									${!firstItemData ? 'bg-empty' : ''}
+									${firstItemData?.mature ? 'blur' : ''}`}
 								/>
 								<Image
-									src={bgImageSecondary || bgEmpty}
-									alt='Game cover 2'
+									src={secondItemData?.src || bgEmpty}
+									alt='Game 2 cover'
 									width={400}
 									height={225}
 									className={`w-full h-full rounded-tr rounded-br
-								${!bgImageSecondary ? 'bg-empty' : ''}`}
+									${!secondItemData ? 'bg-empty' : ''}
+									${secondItemData?.mature ? 'blur' : ''}`}
 								/>
 							</>
 						) : (
 							<Image
-								src={bgImage || bgEmpty}
+								src={firstItemData?.src || bgEmpty}
 								alt='Game cover'
 								width={400}
 								height={225}
 								className={`w-full h-full rounded
-							${!bgImage ? 'bg-empty' : ''}`}
+								${!firstItemData ? 'bg-empty' : ''}
+								${firstItemData?.mature ? 'blur' : ''}`}
 							/>
 						)}
 						<span
