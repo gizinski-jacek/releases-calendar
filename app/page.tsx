@@ -39,10 +39,29 @@ const Home = () => {
 		...nextMonthDaysToObj(selectedYear, selectedMonth),
 	]);
 	const [highlightWeekDay, setHighlightWeekDay] = useState<number | null>(null);
+	const [screenIsSmall, setSmallScreen] = useState<boolean>(true);
 
 	useEffect(() => {
 		setDaysInSelectedMonth(getDaysInMonth(selectedYear, selectedMonth));
 	}, [selectedYear, selectedMonth]);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setSmallScreen(window.innerWidth < 768);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const toggleScreenIsSmall = () => {
+				setSmallScreen(window.innerWidth < 768);
+			};
+
+			window.addEventListener('resize', toggleScreenIsSmall);
+
+			return () => window.removeEventListener('resize', toggleScreenIsSmall);
+		}
+	}, []);
 
 	useEffect(() => {
 		(async () => {
@@ -111,10 +130,10 @@ const Home = () => {
 	};
 
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-between py-6 px-12 relative'>
+		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-2 md:px-4 lg:py-4 lg:px-8 xl:py-6 xl:px-12 relative'>
 			{fetching && <LoadingSpinner />}
 			<div className='mb-4 w-full flex-1 flex flex-col'>
-				<section className='text-xl flex justify-center gap-8 select-none'>
+				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
 					</span>
@@ -127,12 +146,15 @@ const Home = () => {
 						+18
 					</span>
 				</section>
-				<ul className='my-4 grid grid-cols-28 gap-4'>
-					{weekdays.map((day, i) => {
+				<ul className='my-3 grid grid-cols-28 gap-4'>
+					{(
+						(screenIsSmall && weekdays.map((str) => str.slice(0, 3))) ||
+						weekdays
+					).map((day, i) => {
 						return (
 							<li
 								key={day}
-								className={`col-span-4 text-center border-2 border-gray-500 font-bold shadow shadow-gray-500 bg-blue-700 rounded cursor-pointer select-none
+								className={`col-span-4 text-sm lg:text-base text-center border-2 border-gray-500 font-bold shadow shadow-gray-500 bg-blue-700 rounded cursor-pointer select-none
 								${highlightWeekDay === i ? 'shadow-lg border-white bg-blue-600' : ''}`}
 								onClick={() => changeHighlithedWeekDay(i)}
 							>
