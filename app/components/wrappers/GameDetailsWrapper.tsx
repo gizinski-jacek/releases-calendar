@@ -1,5 +1,4 @@
 import { GameData } from '../../lib/types';
-import { useState } from 'react';
 import Gallery from './Gallery';
 
 interface Props {
