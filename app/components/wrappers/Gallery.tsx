@@ -43,7 +43,7 @@ const Gallery = ({ gallery }: Props) => {
 		<>
 			<div className='w-full h-auto max-w-[600px] relative select-none'>
 				<div
-					className='absolute top-[50%] translate-y-[-50%] left-0 text-xl box-border cursor-pointer select-none p-4 transition-all bg-black/50 hover:bg-black/75 text-white rounded-tr-md rounded-br-md'
+					className='absolute top-[50%] translate-y-[-50%] left-0 border-[1px] border-gray-600 hover:border-gray-400 active:border-white text-gray-500 hover:text-white active:text-white text-sm md:text-base lg:text-lg p-2 md:p-3 lg:p-4 box-border cursor-pointer select-none transition-all bg-black/50 hover:bg-black/75 active:bg-black/90 text-white rounded-tr-md rounded-br-md'
 					onClick={prevSlide}
 				>
 					&#10094;
@@ -66,25 +66,25 @@ const Gallery = ({ gallery }: Props) => {
 					);
 				})}
 				<div
-					className='absolute top-[50%] translate-y-[-50%] right-0 text-xl box-border cursor-pointer select-none p-4 transition-all bg-black/50 hover:bg-black/75 text-white rounded-tl-md rounded-bl-md'
+					className='absolute top-[50%] translate-y-[-50%] right-0 border-[1px] border-gray-600 hover:border-gray-400 active:border-white text-gray-500 hover:text-white active:text-white text-sm md:text-base lg:text-lg p-2 md:p-3 lg:p-4 box-border cursor-pointer select-none transition-all bg-black/50 hover:bg-black/75 rounded-tl-md rounded-bl-md'
 					onClick={nextSlide}
 				>
 					&#10095;
 				</div>
 			</div>
-			<div className='flex justify-center items-center gap-2 p-1 pb-4'>
+			<div className='flex justify-center items-center gap-1 md:gap-2 lg:gap-3 p-1 pb-4'>
 				<div
-					className='text-xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
+					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
 					onClick={prevSlide}
 				>
 					&#10094;
 				</div>
-				<div className='flex items-center gap-2'>
+				<div className='flex items-center gap-1 md:gap-2 lg:gap-3'>
 					{gallery.map((item, index) => {
 						return (
 							<span
 								key={item.id}
-								className={`inline transition-all h-4 w-4 bg-gray-500 hover:bg-gray-300 rounded-lg cursor-pointer ${
+								className={`inline transition-all h-3 w-3 md:h-4 md:w-4 bg-gray-500 hover:bg-gray-300 rounded-lg cursor-pointer ${
 									index === slideIndex ? 'bg-white hover:bg-white' : ''
 								}`}
 								onClick={() => changeSlideWithDots(index)}
@@ -93,7 +93,7 @@ const Gallery = ({ gallery }: Props) => {
 					})}
 				</div>
 				<div
-					className='text-xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
+					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
 					onClick={nextSlide}
 				>
 					&#10095;
