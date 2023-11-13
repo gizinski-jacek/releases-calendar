@@ -1,9 +1,8 @@
 import moment from 'moment';
-import { GameData, GroupedByDay } from './types';
+import { DayData, GameData, GroupedByDay } from './types';
+import { filterTags } from './data';
 
 export const filterMature = (data: GroupedByDay): GroupedByDay => {
-	const filterTags = ['sexual-content', 'nsfw'];
-
 	const array = data.map((day) => {
 		const filtered = day.game_releases.filter((item) => {
 			if (!item.tags) return false;
@@ -139,4 +138,65 @@ export const nextMonthDaysToObj = (
 		};
 	});
 	return arr.sort((a, b) => a.dayOfMonth - b.dayOfMonth);
+};
+
+export const getGridItemStyleClass = (
+	item: DayData,
+	index: number,
+	array: DayData[]
+) => {
+	let className = 'col-span-4';
+	if (item.game_releases.length > 0) {
+		// Days with game releases
+		if ((index + 1) % 7 > 1) {
+			// Days 2-6 of the week
+			if (
+				item.game_releases.length > 1 &&
+				array[index + 1].game_releases.length === 0 &&
+				array[index - 1].game_releases.length === 0 &&
+				array[index - 2].game_releases.length === 0 &&
+				item.game_releases.filter((item) => item.background_image).length > 1
+			) {
+				className = 'col-span-8';
+			} else if (
+				array[index + 1].game_releases.length === 0 ||
+				(array[index - 1].game_releases.length === 0 &&
+					array[index - 2].game_releases.length === 0)
+			) {
+				className = 'col-span-6';
+			}
+		} else if (index === 0 || (index + 1) % 7 === 1) {
+			// First day the week
+			if (array[index + 1].game_releases.length === 0) {
+				className = 'col-span-6';
+			}
+		} else if ((index + 1) % 7 === 0) {
+			// Last day the week
+			if (
+				array[index - 1].game_releases.length === 0 &&
+				array[index - 2].game_releases.length === 0
+			) {
+				className = 'col-span-6';
+			}
+		}
+	} else if (item.game_releases.length === 0) {
+		// Days without game releases
+		if ((index + 1) % 7 > 1) {
+			if (
+				array[index + 1].game_releases.length > 0 ||
+				array[index - 1].game_releases.length > 0
+			) {
+				className = 'col-span-2';
+			}
+		} else if (index + 1 === 1 || (index + 1) % 7 === 1) {
+			if (array[index + 1].game_releases.length > 0) {
+				className = 'col-span-2';
+			}
+		} else if ((index + 1) % 7 === 0) {
+			if (array[index - 1].game_releases.length > 0) {
+				className = 'col-span-2';
+			}
+		}
+	}
+	return className;
 };
