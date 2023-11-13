@@ -11,6 +11,7 @@ import {
 	getDaysInMonth,
 	getDaysInNextMonth,
 	getDaysInPrevMonth,
+	getGridItemStyleClass,
 	groupByDate,
 	nextMonthDaysToObj,
 	prevMonthDaysToObj,
@@ -18,16 +19,7 @@ import {
 } from './lib/utils';
 import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
-
-const weekdays = [
-	'Monday',
-	'Tuesday',
-	'Wednesday',
-	'Thursday',
-	'Friday',
-	'Saturday',
-	'Sunday',
-];
+import { weekdays } from './lib/data';
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
@@ -153,65 +145,11 @@ const Home = () => {
 					{calendarData &&
 						(excludeMature ? filterMature(calendarData) : calendarData).map(
 							(item, index, array) => {
-								let styleClass = 'col-span-4';
-								if (item.game_releases.length > 0) {
-									// Days with game releases
-									if ((index + 1) % 7 > 1) {
-										// Days 2-6 of the week
-										if (
-											item.game_releases.length > 1 &&
-											array[index + 1].game_releases.length === 0 &&
-											array[index - 1].game_releases.length === 0 &&
-											array[index - 2].game_releases.length === 0 &&
-											item.game_releases.filter((item) => item.background_image)
-												.length > 1
-										) {
-											styleClass = 'col-span-8';
-										} else if (
-											array[index + 1].game_releases.length === 0 ||
-											(array[index - 1].game_releases.length === 0 &&
-												array[index - 2].game_releases.length === 0)
-										) {
-											styleClass = 'col-span-6';
-										}
-									} else if (index === 0 || (index + 1) % 7 === 1) {
-										// First day the week
-										if (array[index + 1].game_releases.length === 0) {
-											styleClass = 'col-span-6';
-										}
-									} else if ((index + 1) % 7 === 0) {
-										// Last day the week
-										if (
-											array[index - 1].game_releases.length === 0 &&
-											array[index - 2].game_releases.length === 0
-										) {
-											styleClass = 'col-span-6';
-										}
-									}
-								} else if (item.game_releases.length === 0) {
-									// Days without game releases
-									if ((index + 1) % 7 > 1) {
-										if (
-											array[index + 1].game_releases.length > 0 ||
-											array[index - 1].game_releases.length > 0
-										) {
-											styleClass = 'col-span-2';
-										}
-									} else if (index + 1 === 1 || (index + 1) % 7 === 1) {
-										if (array[index + 1].game_releases.length > 0) {
-											styleClass = 'col-span-2';
-										}
-									} else if ((index + 1) % 7 === 0) {
-										if (array[index - 1].game_releases.length > 0) {
-											styleClass = 'col-span-2';
-										}
-									}
-								}
 								return (
 									<CalendarItemWrapper
 										key={item.date}
 										data={item}
-										styleClass={styleClass}
+										styleClass={getGridItemStyleClass(item, index, array)}
 										highlight={
 											highlightWeekDay
 												? (index + 1) % (highlightWeekDay! + 1) === 0
