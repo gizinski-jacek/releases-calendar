@@ -16,7 +16,7 @@ import {
 	prevMonthDaysToObj,
 	sortByMetacriticScore,
 } from './lib/utils';
-import CalendarItemWrapper from './lib/wrappers/CalendarDayWrapper';
+import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
 
 const weekdays = [

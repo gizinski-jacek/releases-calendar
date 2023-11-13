@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DayData } from '../types';
+import { DayData } from '../../lib/types';
 import Modal from '../Modal';
 import GameDetailsWrapper from './GameDetailsWrapper';
 import Image from 'next/image';
