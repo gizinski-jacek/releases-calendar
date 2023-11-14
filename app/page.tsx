@@ -132,7 +132,7 @@ const Home = () => {
 	return (
 		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-2 md:px-4 lg:py-4 lg:px-8 xl:py-6 xl:px-12 relative'>
 			{fetching && <LoadingSpinner />}
-			<div className='mb-4 w-full flex-1 flex flex-col'>
+			<div className='mb-4 w-full flex flex-col'>
 				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none'>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
@@ -174,7 +174,7 @@ const Home = () => {
 										styleClass={getGridItemStyleClass(item, index, array)}
 										highlight={
 											highlightWeekDay
-												? (index + 1) % (highlightWeekDay! + 1) === 0
+												? (index + 1) % (highlightWeekDay + 1) === 0
 												: undefined
 										}
 										translateOnHover={
