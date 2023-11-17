@@ -2,24 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-	--foreground-rgb: rgb(0, 0, 0);
-	--background-start-rgb: rgb(215, 220, 220);
-	--background-end-rgb: rgb(255, 255, 255);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
 	:root {
-		--foreground-rgb: rgb(255, 255, 255);
-		--background-start-rgb: hsl(0, 0%, 0%);
-		--background-end-rgb: rgb(0, 0, 0);
+		--color-primary: 220 220 220;
+		--color-secondary: 0 0 0;
+		--color-gray: 200 200 200;
+		--color-blue: 0 150 255;
+		--color-purple: 200 0 200;
+		--color-gold: 255 225 0;
+	}
+
+	.dark {
+		--color-primary: 0 0 0;
+		--color-secondary: 220 220 220;
+		--color-gray: 50 50 50;
+		--color-blue: 0 50 255;
+		--color-purple: 100 0 100;
+		--color-gold: 200 175 0;
 	}
 }
 
 body {
-	color: var(--foreground-rgb);
-	background: linear-gradient(to bottom, transparent, var(--background-end-rgb))
-		var(--background-start-rgb);
+	color: rgb(var(--color-secondary));
+	background-color: rgb(var(--color-primary));
 }
 
 .bg-empty:after {
@@ -48,10 +53,10 @@ body {
 	border: 2px solid;
 }
 
-.hover-translate-child-right:hover > .translated-child {
-	transform: scale(1.5) translateX(40px);
+.translate-right:hover > .translated-child {
+	transform: translateX(40px);
 }
 
-.hover-translate-child-left:hover > .translated-child {
-	transform: scale(1.5) translateX(-40px);
+.translate-left:hover > .translated-child {
+	transform: translateX(-40px);
 }
