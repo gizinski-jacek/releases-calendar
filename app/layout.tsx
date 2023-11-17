@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.scss';
+import Provider from './hooks/Provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>{children}</body>
+			<body className={`transition-all ${inter.className}`}>
+				<Provider>{children}</Provider>
+			</body>
 		</html>
 	);
 };
