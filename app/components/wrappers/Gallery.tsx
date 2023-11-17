@@ -59,7 +59,7 @@ const Gallery = ({ gallery }: Props) => {
 								alt='Game Image'
 								width={600}
 								height={337}
-								className='w-full h-auto'
+								className='w-full h-auto text-center'
 								onClick={() => openModal(item.image)}
 							/>
 						</div>
@@ -74,7 +74,7 @@ const Gallery = ({ gallery }: Props) => {
 			</div>
 			<div className='flex justify-center items-center gap-1 md:gap-2 lg:gap-3 p-1 pb-4'>
 				<div
-					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
+					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all font-bold text-secondary/60 hover:text-secondary/80 active:text-secondary'
 					onClick={prevSlide}
 				>
 					&#10094;
@@ -84,8 +84,8 @@ const Gallery = ({ gallery }: Props) => {
 						return (
 							<span
 								key={item.id}
-								className={`inline transition-all h-3 w-3 md:h-4 md:w-4 bg-gray-500 hover:bg-gray-300 rounded-lg cursor-pointer ${
-									index === slideIndex ? 'bg-white hover:bg-white' : ''
+								className={`inline transition-all h-3 border-[2px] border-secondary/60 w-3 md:h-4 md:w-4 bg-secondary/60 hover:bg-secondary/80 active:bg-secondary rounded-lg cursor-pointer ${
+									index === slideIndex ? '!bg-gold !border-secondary' : ''
 								}`}
 								onClick={() => changeSlideWithDots(index)}
 							/>
@@ -93,7 +93,7 @@ const Gallery = ({ gallery }: Props) => {
 					})}
 				</div>
 				<div
-					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all text-gray-300 hover:text-white'
+					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all font-bold text-secondary/60 hover:text-secondary/80 active:text-secondary'
 					onClick={nextSlide}
 				>
 					&#10095;
@@ -104,15 +104,15 @@ const Gallery = ({ gallery }: Props) => {
 					<img
 						src={openImage}
 						alt='Game Image'
-						className='w-full h-auto'
+						className='w-full h-auto text-center'
 						onClick={closeModal}
 					/>
 				</ModalImage>
 			)}
 		</>
 	) : (
-		<div className='relative select-none bg-empty'>
-			<Image src={bgEmpty} alt='No game images' />
+		<div className='relative select-none bg-empty text-center'>
+			<Image src={bgEmpty} alt='No game image' />
 		</div>
 	);
 };
