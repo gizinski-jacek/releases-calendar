@@ -46,7 +46,6 @@ export interface DayData {
 	date: string;
 	dayOfMonth: number;
 	isCurrentMonth: boolean;
-	isCurrentDay: boolean;
 	game_releases: GameData[];
 }
 
