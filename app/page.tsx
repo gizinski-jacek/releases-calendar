@@ -19,7 +19,7 @@ import {
 } from './lib/utils';
 import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
-import { weekdays } from './lib/data';
+import ThemeSwitcher from './components/ThemeSwitcher';
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
@@ -129,11 +129,21 @@ const Home = () => {
 			: setHighlightWeekDay(value);
 	};
 
+	const setPresentDate = () => {
+		const date = moment().utc();
+		setSelectedYear(date.year());
+		setSelectedMonth(date.month());
+		setDaysInSelectedMonth(getDaysInMonth(date.year(), date.month()));
+	};
+
 	return (
-		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-2 md:px-4 lg:py-4 lg:px-8 xl:py-6 xl:px-12 relative'>
+		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-1 md:px-4 lg:py-2 lg:px-8 xl:py-3 xl:px-12 relative'>
 			{fetching && <LoadingSpinner />}
 			<div className='mb-4 w-full flex flex-col'>
 				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none'>
+					<span className='cursor-pointer' onClick={setPresentDate}>
+						Back To Current Month
+					</span>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
 					</span>
@@ -145,23 +155,27 @@ const Home = () => {
 					<span className='cursor-pointer' onClick={toggleMature}>
 						+18
 					</span>
+					<ThemeSwitcher />
 				</section>
 				<ul className='my-3 grid grid-cols-28 gap-4'>
-					{(
-						(screenIsSmall && weekdays.map((str) => str.slice(0, 3))) ||
-						weekdays
-					).map((day, i) => {
-						return (
-							<li
-								key={day}
-								className={`col-span-4 text-sm lg:text-base text-center border-2 border-gray-500 font-bold shadow shadow-gray-500 bg-blue-700 rounded cursor-pointer select-none
-								${highlightWeekDay === i ? 'shadow-lg border-white bg-blue-600' : ''}`}
-								onClick={() => changeHighlithedWeekDay(i)}
-							>
-								{day}
-							</li>
-						);
-					})}
+					{((screenIsSmall && moment.weekdaysShort()) || moment.weekdays()).map(
+						(day, i) => {
+							return (
+								<li
+									key={day}
+									className={`col-span-4 transition-all uppercase text-sm lg:text-base text-center font-semibold text-secondary border-2 border-secondary/80 hover:border-secondary/90 active:border-secondary bg-blue/75 hover:bg-blue/90 active:bg-blue hover:shadow active:shadow-md shadow-secondary/75 hover:shadow-secondary/90 active:shadow-secondary/90 rounded cursor-pointer select-none
+								${
+									highlightWeekDay === i + 1
+										? '!shadow-md !shadow-gold !border-gold !bg-blue'
+										: ''
+								}`}
+									onClick={() => changeHighlithedWeekDay(i + 1)}
+								>
+									{day}
+								</li>
+							);
+						}
+					)}
 				</ul>
 				<ul className='flex-1 grid grid-cols-28 gap-4'>
 					{calendarData &&
@@ -177,11 +191,11 @@ const Home = () => {
 												? (index + 1) % (highlightWeekDay + 1) === 0
 												: undefined
 										}
-										translateOnHover={
+										translateDirection={
 											index + 1 === 1 || (index + 1) % 7 === 1
-												? 'hover-translate-child-right'
+												? 'right'
 												: (index + 1) % 7 === 0
-												? 'hover-translate-child-left'
+												? 'left'
 												: undefined
 										}
 									/>
