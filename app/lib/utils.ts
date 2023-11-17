@@ -99,7 +99,6 @@ export const prevMonthDaysToObj = (
 			date: getDateInString(year, month - 1, daysInPrevMonth - i),
 			dayOfMonth: daysInPrevMonth - i,
 			isCurrentMonth: false,
-			isCurrentDay: false,
 			game_releases: [] as GameData[],
 		};
 	});
@@ -116,7 +115,6 @@ export const daysInMonthToObject = (
 			date: date,
 			dayOfMonth: i + 1,
 			isCurrentMonth: true,
-			isCurrentDay: moment().date() === i + 1,
 			game_releases: [] as GameData[],
 		};
 	});
@@ -133,7 +131,6 @@ export const nextMonthDaysToObj = (
 			date: getDateInString(year, month + 1, i + 1),
 			dayOfMonth: i + 1,
 			isCurrentMonth: false,
-			isCurrentDay: false,
 			game_releases: [] as GameData[],
 		};
 	});
