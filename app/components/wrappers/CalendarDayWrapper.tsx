@@ -137,23 +137,29 @@ const CalendarItemWrapper = ({
 								/>
 							)
 						)}
-						<span
-							className={`transition-all text-secondary absolute top-0 left-0 font-semibold text-sm md:text-base lg:text-lg xl:text-xl px-1 leading-5 rounded-br
-						${
-							data.date === moment().utc().toISOString(false).slice(0, 10)
-								? highlight
-									? '!text-primary !bg-gold'
-									: '!text-gold !bg-blue'
-								: '!bg-purple'
-						}`}
-						>
-							{data.dayOfMonth}
-						</span>
-						{data.game_releases.length > 0 && (
-							<span className='absolute bottom-0 right-0 bg-green-700 text-white font-semibold text-xs lg:text-sm xl:text-base px-[2px] md:px-1 rounded-tl'>
-								{data.game_releases.length}
-							</span>
-						)}
+						<div className='absolute top-0 bottom-0 left-0 right-0 flex'>
+							<div
+								className={`opacity-90 me-auto self-start relative transition-all border-[1.1rem] md:border-[1.25rem] lg:border-[1.5rem] border-purple !border-b-transparent !border-r-transparent text-secondary font-bold text-sm md:text-base lg:text-lg xl:text-xl
+							${
+								data.date === moment().utc().toISOString(false).slice(0, 10)
+									? highlight
+										? '!text-primary !border-gold'
+										: '!text-gold !border-blue'
+									: ''
+							}`}
+							>
+								<span className='absolute block top-[-1rem] left-[-1.05rem] md:top-[-1.20rem] md:left-[-1.25rem] lg:top-[-1.35rem] lg:left-[-1.40rem] w-[1.25rem] h-[1.25rem] md:w-[1.5rem] md:h-[1.5rem] lg:w-[1.75rem] lg:h-[1.75rem] text-center rotate-[-45deg]'>
+									{data.dayOfMonth}
+								</span>
+							</div>
+							{data.game_releases.length > 0 && (
+								<div className='absolute opacity-80 ms-auto self-end relative transition-all border-[0.85rem] lg:border-[0.95rem] xl:border-[1.1rem] border-green-700 border-t-transparent border-l-transparent text-white font-semibold text-xs lg:text-sm xl:text-base'>
+									<span className='absolute bottom-[-0.75rem] right-[-0.75rem] lg:bottom-[-0.95rem] lg:right-[-0.95rem] xl:bottom-[-1.15rem] xl:right-[-1.15rem] w-[1rem] h-[1rem] lg:w-[1.25rem] lg:h-[1.25rem] xl:w-[1.5rem] xl:h-[1.5rem] text-center rotate-[-45deg]'>
+										{data.game_releases.length}
+									</span>
+								</div>
+							)}
+						</div>
 					</div>
 				</li>
 				{showModal && data.game_releases.length && (
