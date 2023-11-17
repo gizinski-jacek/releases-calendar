@@ -3,24 +3,21 @@ import { DayData } from '../../lib/types';
 import Modal from '../Modal';
 import GameDetailsWrapper from './GameDetailsWrapper';
 import Image from 'next/image';
-import bgEmpty from '/public/empty-background.png';
 import { filterTags } from '@/app/lib/data';
+import moment from 'moment';
 
 interface Props {
 	data: DayData;
 	styleClass?: string;
 	highlight?: boolean;
-	translateOnHover?:
-		| 'hover-translate-child-right'
-		| 'hover-translate-child-left'
-		| undefined;
+	translateDirection?: 'left' | 'right' | undefined;
 }
 
 const CalendarItemWrapper = ({
 	data,
 	styleClass = '',
 	highlight = false,
-	translateOnHover = undefined,
+	translateDirection = undefined,
 }: Props) => {
 	const [firstItemData, setFirstItemData] = useState<{
 		src: string;
@@ -74,64 +71,86 @@ const CalendarItemWrapper = ({
 			<>
 				<li
 					key={data.date}
-					className={` 
+					className={`
 					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
-					${data.game_releases.length ? 'cursor-pointer hover:z-10' : ''}
-					${data.game_releases.length && translateOnHover ? translateOnHover : ''}
 					${
-						data.game_releases.length && !translateOnHover
-							? 'transition-all hover:scale-150'
+						data.game_releases.length
+							? 'cursor-pointer hover:z-10 hover:scale-150 transition-all'
+							: ''
+					}
+					${
+						data.game_releases.length && translateDirection
+							? `translate-${translateDirection}`
 							: ''
 					}
 					${styleClass}`}
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
 					<div
-						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 shadow shadow-gray-500 bg-purple-800 border-2 border-purple-700 rounded-md relative bg-no-repeat bg-[size:100%_100%] transition-all select-none
-						${highlight ? 'shadow-lg border-white' : ''}
-						${translateOnHover ? 'translated-child' : ''}`}
+						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 shadow shadow-secondary/75 bg-secondary/20 border-2 border-purple rounded-md relative bg-no-repeat bg-[size:100%_100%] overflow-hidden transition-all select-none
+						${highlight ? '!shadow-md !shadow-gold !border-gold' : ''}
+						${
+							data.date === moment().utc().toISOString(false).slice(0, 10)
+								? highlight
+									? '!border-gold'
+									: '!border-blue'
+								: ''
+						}
+						${translateDirection ? 'translated-child' : ''}`}
 					>
 						{data.game_releases.length > 1 &&
 						styleClass.includes('col-span-8') ? (
 							<>
-								<Image
-									src={firstItemData?.src || bgEmpty}
-									alt='Game 1 cover'
-									width={400}
-									height={225}
-									className={`w-full h-full rounded-tl rounded-bl
+								{firstItemData && (
+									<Image
+										src={firstItemData.src}
+										alt='First game cover art'
+										width={400}
+										height={225}
+										className={`w-full h-full text-center
 									${!firstItemData ? 'bg-empty' : ''}
 									${firstItemData?.mature ? 'blur' : ''}`}
-								/>
-								<Image
-									src={secondItemData?.src || bgEmpty}
-									alt='Game 2 cover'
-									width={400}
-									height={225}
-									className={`w-full h-full rounded-tr rounded-br
+									/>
+								)}
+								{secondItemData && (
+									<Image
+										src={secondItemData.src}
+										alt='Second game cover art'
+										width={400}
+										height={225}
+										className={`w-full h-full text-center
 									${!secondItemData ? 'bg-empty' : ''}
 									${secondItemData?.mature ? 'blur' : ''}`}
-								/>
+									/>
+								)}
 							</>
 						) : (
-							<Image
-								src={firstItemData?.src || bgEmpty}
-								alt='Game cover'
-								width={400}
-								height={225}
-								className={`w-full h-full rounded
+							firstItemData && (
+								<Image
+									src={firstItemData.src}
+									alt='Game cover art'
+									width={400}
+									height={225}
+									className={`w-full h-full text-center
 								${!firstItemData ? 'bg-empty' : ''}
 								${firstItemData?.mature ? 'blur' : ''}`}
-							/>
+								/>
+							)
 						)}
 						<span
-							className={`absolute top-0 left-0 font-bold text-sm md:text-base lg:text-lg xl:text-xl ps-[1px] pe-[4px] pb-[2px] leading-5 rounded-tl rounded-br
-						${data.isCurrentDay ? 'text-yellow-300 bg-blue-700' : 'bg-purple-700'}`}
+							className={`transition-all text-secondary absolute top-0 left-0 font-semibold text-sm md:text-base lg:text-lg xl:text-xl px-1 leading-5 rounded-br
+						${
+							data.date === moment().utc().toISOString(false).slice(0, 10)
+								? highlight
+									? '!text-primary !bg-gold'
+									: '!text-gold !bg-blue'
+								: '!bg-purple'
+						}`}
 						>
 							{data.dayOfMonth}
 						</span>
 						{data.game_releases.length > 0 && (
-							<span className='absolute bottom-0 right-0 bg-green-700 font-bold text-xs md:text-sm lg:text-base xl:text-lg px-[2px] md:px-1 rounded-tl rounded-br'>
+							<span className='absolute bottom-0 right-0 bg-green-700 text-white font-semibold text-xs lg:text-sm xl:text-base px-[2px] md:px-1 rounded-tl'>
 								{data.game_releases.length}
 							</span>
 						)}
