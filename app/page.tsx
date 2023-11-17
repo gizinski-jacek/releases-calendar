@@ -140,9 +140,9 @@ const Home = () => {
 		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-1 md:px-4 lg:py-2 lg:px-8 xl:py-3 xl:px-12 relative'>
 			{fetching && <LoadingSpinner />}
 			<div className='mb-4 w-full flex flex-col'>
-				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none'>
+				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none font-semibold'>
 					<span className='cursor-pointer' onClick={setPresentDate}>
-						Back To Current Month
+						Current Month
 					</span>
 					<span className='cursor-pointer' onClick={decrementMonth}>
 						{'<'}
@@ -181,14 +181,18 @@ const Home = () => {
 					{calendarData &&
 						(excludeMature ? filterMature(calendarData) : calendarData).map(
 							(item, index, array) => {
+								// console.log(moment(item.date).weekday());
+								// console.log(highlightWeekDay);
 								return (
+									// TODO: Fix highlighting not working
+									// First day of the week issue
 									<CalendarItemWrapper
 										key={item.date}
 										data={item}
 										styleClass={getGridItemStyleClass(item, index, array)}
 										highlight={
 											highlightWeekDay
-												? (index + 1) % (highlightWeekDay + 1) === 0
+												? moment(item.date).weekday() === highlightWeekDay
 												: undefined
 										}
 										translateDirection={
