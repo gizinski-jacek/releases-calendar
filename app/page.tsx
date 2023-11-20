@@ -20,6 +20,13 @@ import {
 import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import Button from './components/reusables/Button';
+
+moment.updateLocale('en', {
+	week: {
+		dow: 1,
+	},
+});
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
@@ -158,53 +165,40 @@ const Home = () => {
 					<ThemeSwitcher />
 				</section>
 				<ul className='my-3 grid grid-cols-28 gap-4'>
-					{((screenIsSmall && moment.weekdaysShort()) || moment.weekdays()).map(
-						(day, i) => {
-							return (
-								<li
-									key={day}
-									className={`col-span-4 transition-all uppercase text-sm lg:text-base text-center font-semibold text-secondary border-2 border-secondary/80 hover:border-secondary/90 active:border-secondary bg-blue/75 hover:bg-blue/90 active:bg-blue hover:shadow active:shadow-md shadow-secondary/75 hover:shadow-secondary/90 active:shadow-secondary/90 rounded cursor-pointer select-none
-								${
-									highlightWeekDay === i + 1
-										? '!shadow-md !shadow-gold !border-gold !bg-blue'
-										: ''
-								}`}
-									onClick={() => changeHighlithedWeekDay(i + 1)}
-								>
-									{day}
-								</li>
-							);
-						}
-					)}
+					{(
+						(screenIsSmall && moment.weekdaysShort(true)) ||
+						moment.weekdays(true)
+					).map((day, i) => (
+						<Button
+							key={day}
+							data={day}
+							styleClass={
+								highlightWeekDay === i
+									? '!shadow-md !shadow-custom-gold !border-custom-gold !bg-custom-blue'
+									: ''
+							}
+							cta={() => changeHighlithedWeekDay(i)}
+						/>
+					))}
 				</ul>
 				<ul className='flex-1 grid grid-cols-28 gap-4'>
 					{calendarData &&
 						(excludeMature ? filterMature(calendarData) : calendarData).map(
-							(item, index, array) => {
-								// console.log(moment(item.date).weekday());
-								// console.log(highlightWeekDay);
-								return (
-									// TODO: Fix highlighting not working
-									// First day of the week issue
-									<CalendarItemWrapper
-										key={item.date}
-										data={item}
-										styleClass={getGridItemStyleClass(item, index, array)}
-										highlight={
-											highlightWeekDay
-												? moment(item.date).weekday() === highlightWeekDay
-												: undefined
-										}
-										translateDirection={
-											index + 1 === 1 || (index + 1) % 7 === 1
-												? 'right'
-												: (index + 1) % 7 === 0
-												? 'left'
-												: undefined
-										}
-									/>
-								);
-							}
+							(item, index, array) => (
+								<CalendarItemWrapper
+									key={item.date}
+									data={item}
+									styleClass={getGridItemStyleClass(item, index, array)}
+									highlight={moment(item.date).weekday() === highlightWeekDay}
+									translateDirection={
+										index + 1 === 1 || (index + 1) % 7 === 1
+											? 'right'
+											: (index + 1) % 7 === 0
+											? 'left'
+											: undefined
+									}
+								/>
+							)
 						)}
 				</ul>
 			</div>
