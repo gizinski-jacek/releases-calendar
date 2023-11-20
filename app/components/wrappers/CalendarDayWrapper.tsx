@@ -87,13 +87,13 @@ const CalendarItemWrapper = ({
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
 					<div
-						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 shadow shadow-secondary/75 bg-secondary/20 border-2 border-purple rounded-md relative bg-no-repeat bg-[size:100%_100%] overflow-hidden transition-all select-none
-						${highlight ? '!shadow-md !shadow-gold !border-gold' : ''}
+						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 shadow shadow-custom-secondary/75 bg-custom-secondary/20 border-2 border-custom-purple rounded-md relative bg-no-repeat bg-[size:100%_100%] overflow-hidden transition-all select-none
+						${highlight ? '!shadow-md !shadow-custom-gold !border-custom-gold' : ''}
 						${
 							data.date === moment().utc().toISOString(false).slice(0, 10)
 								? highlight
-									? '!border-gold'
-									: '!border-blue'
+									? '!border-custom-gold'
+									: '!border-custom-blue'
 								: ''
 						}
 						${translateDirection ? 'translated-child' : ''}`}
@@ -139,12 +139,12 @@ const CalendarItemWrapper = ({
 						)}
 						<div className='absolute top-0 bottom-0 left-0 right-0 flex'>
 							<div
-								className={`opacity-90 me-auto self-start relative transition-all border-[1.1rem] md:border-[1.25rem] lg:border-[1.5rem] border-purple !border-b-transparent !border-r-transparent text-secondary font-bold text-sm md:text-base lg:text-lg xl:text-xl
+								className={`opacity-90 me-auto self-start relative transition-all border-[1.1rem] md:border-[1.25rem] lg:border-[1.5rem] border-custom-purple !border-b-transparent !border-r-transparent text-custom-secondary font-bold text-sm md:text-base lg:text-lg xl:text-xl
 							${
 								data.date === moment().utc().toISOString(false).slice(0, 10)
 									? highlight
-										? '!text-primary !border-gold'
-										: '!text-gold !border-blue'
+										? '!text-custom-primary !border-custom-gold'
+										: '!text-custom-gold !border-custom-blue'
 									: ''
 							}`}
 							>
