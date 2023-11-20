@@ -8,11 +8,11 @@ const ThemeSwitcher = () => {
 
 	return (
 		<div
-			className='self-center transition-all rounded cursor-pointer m-1 border-2 border-secondary rounded-xl bg-blue transition-all w-12'
+			className='self-center transition-all rounded cursor-pointer m-1 border-2 border-custom-secondary rounded-xl bg-custom-blue transition-all w-12'
 			onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
 		>
 			<div
-				className={`w-3 h-3 m-[0.2rem] rounded-lg bg-gold transition-all
+				className={`w-3 h-3 m-[0.2rem] rounded-lg bg-custom-gold transition-all
 				${theme === 'dark' ? '' : 'translate-x-6'}`}
 			/>
 		</div>
