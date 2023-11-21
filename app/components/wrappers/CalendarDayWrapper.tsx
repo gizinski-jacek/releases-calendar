@@ -19,11 +19,11 @@ const CalendarItemWrapper = ({
 	highlight = false,
 	translateDirection = undefined,
 }: Props) => {
-	const [firstItemData, setFirstItemData] = useState<{
+	const [firstImageData, setFirstImageData] = useState<{
 		src: string;
 		mature: boolean;
 	} | null>();
-	const [secondItemData, setSecondItemData] = useState<{
+	const [secondImageData, setSecondImageData] = useState<{
 		src: string;
 		mature: boolean;
 	} | null>();
@@ -39,11 +39,11 @@ const CalendarItemWrapper = ({
 
 	useEffect(() => {
 		setShowModal(false);
-		setFirstItemData(null);
-		setSecondItemData(null);
+		setFirstImageData(null);
+		setSecondImageData(null);
 		if (data.game_releases.length) {
 			const item = data.game_releases.find((item) => item.background_image);
-			setFirstItemData({
+			setFirstImageData({
 				src: item?.background_image || '',
 				mature:
 					!!item?.tags?.find((tag) => filterTags.includes(tag.slug)) || false,
@@ -53,7 +53,7 @@ const CalendarItemWrapper = ({
 					(item) => item.background_image
 				);
 				if (itemArray.length > 1) {
-					setSecondItemData({
+					setSecondImageData({
 						src: itemArray[1].background_image || '',
 						mature:
 							!!itemArray[1].tags?.find((tag) =>
@@ -99,39 +99,39 @@ const CalendarItemWrapper = ({
 						{data.game_releases.length > 1 &&
 						styleClass.includes('col-span-8') ? (
 							<>
-								{firstItemData && (
+								{firstImageData && (
 									<Image
-										src={firstItemData.src}
+										src={firstImageData.src}
 										alt='First game cover art'
 										width={400}
 										height={225}
 										className={`w-full h-full text-center
-									${!firstItemData ? 'bg-empty' : ''}
-									${firstItemData?.mature ? 'blur' : ''}`}
+									${!firstImageData.src ? 'bg-empty' : ''}
+									${firstImageData?.mature ? 'blur' : ''}`}
 									/>
 								)}
-								{secondItemData && (
+								{secondImageData && (
 									<Image
-										src={secondItemData.src}
+										src={secondImageData.src}
 										alt='Second game cover art'
 										width={400}
 										height={225}
 										className={`w-full h-full text-center
-									${!secondItemData ? 'bg-empty' : ''}
-									${secondItemData?.mature ? 'blur' : ''}`}
+									${!secondImageData.src ? 'bg-empty' : ''}
+									${secondImageData?.mature ? 'blur' : ''}`}
 									/>
 								)}
 							</>
 						) : (
-							firstItemData && (
+							firstImageData && (
 								<Image
-									src={firstItemData.src}
+									src={firstImageData.src}
 									alt='Game cover art'
 									width={400}
 									height={225}
 									className={`w-full h-full text-center
-								${!firstItemData ? 'bg-empty' : ''}
-								${firstItemData?.mature ? 'blur' : ''}`}
+								${!firstImageData.src ? 'bg-empty' : ''}
+								${firstImageData?.mature ? 'blur' : ''}`}
 								/>
 							)
 						)}
