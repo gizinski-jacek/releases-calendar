@@ -4,7 +4,7 @@ import ModalImage from '@/app/components/ModalImage';
 import bgEmpty from '/public/empty-background.png';
 
 interface Props {
-	gallery: { id: number; image: string }[];
+	gallery: { id: number; image: string }[] | null | undefined;
 }
 
 const Gallery = ({ gallery }: Props) => {
@@ -12,6 +12,7 @@ const Gallery = ({ gallery }: Props) => {
 	const [openImage, setOpenImage] = useState<string | null>(null);
 
 	const prevSlide = () => {
+		if (!gallery) return;
 		if (slideIndex <= 0) {
 			setSlideIndex(gallery.length - 1);
 		} else {
@@ -20,6 +21,7 @@ const Gallery = ({ gallery }: Props) => {
 	};
 
 	const nextSlide = () => {
+		if (!gallery) return;
 		if (slideIndex >= gallery.length - 1) {
 			setSlideIndex(0);
 		} else {
@@ -39,7 +41,7 @@ const Gallery = ({ gallery }: Props) => {
 		setOpenImage(null);
 	};
 
-	return gallery.length > 0 ? (
+	return gallery && gallery.length > 0 ? (
 		<>
 			<div className='w-full h-auto max-w-[600px] relative select-none'>
 				<div
