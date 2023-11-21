@@ -30,7 +30,7 @@ moment.updateLocale('en', {
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
-	const [excludeMature, setExcludeMature] = useState<boolean>(true);
+	const [showMature, setShowMature] = useState<boolean>(false);
 	const [selectedYear, setSelectedYear] = useState<number>(
 		moment().utc().year()
 	);
@@ -127,7 +127,7 @@ const Home = () => {
 	};
 
 	const toggleMature = () => {
-		setExcludeMature(!excludeMature);
+		setShowMature(!showMature);
 	};
 
 	const changeHighlithedWeekDay = (value: number) => {
@@ -148,20 +148,36 @@ const Home = () => {
 			{fetching && <LoadingSpinner />}
 			<div className='mb-4 w-full flex flex-col'>
 				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none font-semibold'>
-					<span className='cursor-pointer' onClick={setPresentDate}>
+					<Button styleClass='!px-1 !leading-6' cta={setPresentDate}>
 						Current Month
+					</Button>
+					<span
+						className='transition-all opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
+						onClick={decrementMonth}
+					>
+						&#10094;
 					</span>
-					<span className='cursor-pointer' onClick={decrementMonth}>
-						{'<'}
+					<span className='w-12 text-center'>{selectedYear}</span>
+					<span className='w-28 text-center'>
+						{moment().month(selectedMonth).format('MMMM')}
 					</span>
-					<span>{selectedYear}</span>
-					<span>{moment().month(selectedMonth).format('MMMM')}</span>
-					<span className='cursor-pointer' onClick={incrementMonth}>
-						{'>'}
+					<span
+						className='transition-all opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
+						onClick={incrementMonth}
+					>
+						&#10095;
 					</span>
-					<span className='cursor-pointer' onClick={toggleMature}>
+					<Button
+						styleClass={`!px-1 !leading-6 hover:opacity-100 active:opacity-100
+					${
+						showMature
+							? 'opacity-100 !bg-custom-red !border-custom-secondary !text-custom-primary'
+							: 'opacity-50'
+					}`}
+						cta={toggleMature}
+					>
 						+18
-					</span>
+					</Button>
 					<ThemeSwitcher />
 				</section>
 				<ul className='my-3 grid grid-cols-28 gap-4'>
@@ -171,19 +187,20 @@ const Home = () => {
 					).map((day, i) => (
 						<Button
 							key={day}
-							data={day}
 							styleClass={
 								highlightWeekDay === i
-									? '!shadow-md !shadow-custom-gold !border-custom-gold !bg-custom-blue'
+									? '!shadow-md !shadow-custom-red !border-custom-red !bg-custom-blue'
 									: ''
 							}
 							cta={() => changeHighlithedWeekDay(i)}
-						/>
+						>
+							{day}
+						</Button>
 					))}
 				</ul>
 				<ul className='flex-1 grid grid-cols-28 gap-4'>
 					{calendarData &&
-						(excludeMature ? filterMature(calendarData) : calendarData).map(
+						(showMature ? calendarData : filterMature(calendarData)).map(
 							(item, index, array) => (
 								<CalendarItemWrapper
 									key={item.date}
