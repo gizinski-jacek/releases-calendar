@@ -22,7 +22,6 @@ const config: Config = {
 				'custom-gray': 'rgb(var(--color-gray) / <alpha-value>)',
 				'custom-blue': 'rgb(var(--color-blue) / <alpha-value>)',
 				'custom-purple': 'rgb(var(--color-purple) / <alpha-value>)',
-				'custom-gold': 'rgb(var(--color-gold) / <alpha-value>)',
 				'custom-red': 'rgb(var(--color-red) / <alpha-value>)',
 			},
 		},
