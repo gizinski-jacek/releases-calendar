@@ -8,8 +8,8 @@ interface Props {
 
 const GameDetailsWrapper = ({ game }: Props) => {
 	return (
-		<div className='flex gap-4 bg-custom-gray'>
-			<div className='min-w-[30%] md:min-w-[40%] lg:min-w-[50%] flex-1 shrink-0 grow p-1 md:p-2'>
+		<div className='flex gap-2 md:gap-4 lg:gap-6 bg-custom-gray'>
+			<div className='min-w-[30%] flex-1 shrink-0 grow p-1 md:p-2'>
 				<div className='mb-1 md:mb-2 lg:mb-4 text-lg md:text-xl lg:text-2xl font-bold'>
 					{game.name}
 				</div>
@@ -76,7 +76,7 @@ const GameDetailsWrapper = ({ game }: Props) => {
 								{game.stores
 									.sort((a, b) => a.store.name.localeCompare(b.store.name))
 									.map((item, i, arr) => (
-										<>
+										<div key={i}>
 											<a
 												key={item.store.slug}
 												href={storeLinks[item.store.slug]}
@@ -87,18 +87,16 @@ const GameDetailsWrapper = ({ game }: Props) => {
 												{item.store.name}
 											</a>
 											{i !== arr.length - 1 && ', '}
-										</>
+										</div>
 									))}
 							</div>
 						</div>
 					)}
 				</div>
 			</div>
-			{game.short_screenshots && (
-				<div className='flex-none basis-[600px] shrink grow-0 h-fit'>
-					<Gallery gallery={game.short_screenshots} />
-				</div>
-			)}
+			<div className='flex-none basis-[600px] shrink grow-0 h-fit'>
+				<Gallery gallery={game.short_screenshots} />
+			</div>
 		</div>
 	);
 };
