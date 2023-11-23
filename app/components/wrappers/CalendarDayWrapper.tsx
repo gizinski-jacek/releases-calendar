@@ -75,7 +75,7 @@ const CalendarItemWrapper = ({
 					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
 					${
 						data.game_releases.length
-							? 'cursor-pointer hover:z-10 hover:scale-150 transition-all'
+							? 'cursor-pointer hover:z-10 hover:scale-150 transition-all duration-300'
 							: ''
 					}
 					${
@@ -87,9 +87,9 @@ const CalendarItemWrapper = ({
 					onClick={data.game_releases.length ? openModal : undefined}
 				>
 					<div
-						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 shadow shadow-custom-secondary/75 bg-custom-secondary/20 border-2 border-custom-purple rounded-md relative bg-no-repeat bg-[size:100%_100%] overflow-hidden transition-all select-none
+						className={`flex gap-[1px] h-16 md:h-20 lg:h-24 xl:h-28 2xl:h-32 shadow shadow-custom-secondary/75 bg-custom-gray border-2 border-custom-purple rounded-md relative bg-no-repeat bg-[size:100%_100%] overflow-hidden transition-all duration-300 select-none
 						${
-							data.date === moment().utc().toISOString(false).slice(0, 10)
+							data.date === moment.utc().toISOString(false).slice(0, 10)
 								? '!border-custom-blue'
 								: ''
 						}
@@ -99,31 +99,38 @@ const CalendarItemWrapper = ({
 						{data.game_releases.length > 1 &&
 						styleClass.includes('col-span-8') ? (
 							<>
-								{firstImageData && (
-									<Image
-										src={firstImageData.src}
-										alt='First game cover art'
-										width={400}
-										height={225}
-										className={`w-full h-full text-center
+								{firstImageData &&
+									(firstImageData.src ? (
+										<Image
+											src={firstImageData.src}
+											alt='First game cover art'
+											width={400}
+											height={225}
+											className={`w-full h-full text-center
 									${!firstImageData.src ? 'bg-empty' : ''}
 									${firstImageData?.mature ? 'blur' : ''}`}
-									/>
-								)}
-								{secondImageData && (
-									<Image
-										src={secondImageData.src}
-										alt='Second game cover art'
-										width={400}
-										height={225}
-										className={`w-full h-full text-center
+										/>
+									) : (
+										<div className='bg-empty' />
+									))}
+								{secondImageData &&
+									(secondImageData.src ? (
+										<Image
+											src={secondImageData.src}
+											alt='Second game cover art'
+											width={400}
+											height={225}
+											className={`w-full h-full text-center
 									${!secondImageData.src ? 'bg-empty' : ''}
 									${secondImageData?.mature ? 'blur' : ''}`}
-									/>
-								)}
+										/>
+									) : (
+										<div className='bg-empty' />
+									))}
 							</>
 						) : (
-							firstImageData && (
+							firstImageData &&
+							(firstImageData.src ? (
 								<Image
 									src={firstImageData.src}
 									alt='Game cover art'
@@ -133,13 +140,15 @@ const CalendarItemWrapper = ({
 								${!firstImageData.src ? 'bg-empty' : ''}
 								${firstImageData?.mature ? 'blur' : ''}`}
 								/>
-							)
+							) : (
+								<div className='bg-empty' />
+							))
 						)}
 						<div className='absolute top-0 bottom-0 left-0 right-0 flex'>
 							<div
-								className={`opacity-90 me-auto self-start relative transition-all border-[1.1rem] md:border-[1.25rem] lg:border-[1.5rem] border-custom-purple !border-b-transparent !border-r-transparent text-custom-secondary font-bold text-sm md:text-base lg:text-lg xl:text-xl
+								className={`opacity-90 me-auto self-start relative transition-all duration-300 border-[1.1rem] md:border-[1.25rem] lg:border-[1.5rem] border-custom-purple !border-b-transparent !border-r-transparent text-custom-secondary font-bold text-sm md:text-base lg:text-lg xl:text-xl
 								${
-									data.date === moment().utc().toISOString(false).slice(0, 10)
+									data.date === moment.utc().toISOString(false).slice(0, 10)
 										? '!border-custom-blue'
 										: ''
 								}`}
@@ -149,7 +158,7 @@ const CalendarItemWrapper = ({
 								</span>
 							</div>
 							{data.game_releases.length > 0 && (
-								<div className='absolute opacity-80 ms-auto self-end relative transition-all border-[0.85rem] lg:border-[0.95rem] xl:border-[1.1rem] border-green-700 border-t-transparent border-l-transparent text-white font-semibold text-xs lg:text-sm xl:text-base'>
+								<div className='absolute opacity-80 ms-auto self-end relative transition-all duration-300 border-[0.85rem] lg:border-[0.95rem] xl:border-[1.1rem] border-green-700 border-t-transparent border-l-transparent text-white font-semibold text-xs lg:text-sm xl:text-base'>
 									<span className='absolute bottom-[-0.75rem] right-[-0.75rem] lg:bottom-[-0.95rem] lg:right-[-0.95rem] xl:bottom-[-1.15rem] xl:right-[-1.15rem] w-[1rem] h-[1rem] lg:w-[1.25rem] lg:h-[1.25rem] xl:w-[1.5rem] xl:h-[1.5rem] text-center rotate-[-45deg]'>
 										{data.game_releases.length}
 									</span>
