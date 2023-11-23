@@ -31,11 +31,9 @@ moment.updateLocale('en', {
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
 	const [showMature, setShowMature] = useState<boolean>(false);
-	const [selectedYear, setSelectedYear] = useState<number>(
-		moment().utc().year()
-	);
+	const [selectedYear, setSelectedYear] = useState<number>(moment.utc().year());
 	const [selectedMonth, setSelectedMonth] = useState<number>(
-		moment().utc().month()
+		moment.utc().month()
 	);
 	const [daysInSelectedMonth, setDaysInSelectedMonth] = useState<number>(
 		getDaysInMonth(selectedYear, selectedMonth)
@@ -137,10 +135,20 @@ const Home = () => {
 	};
 
 	const setPresentDate = () => {
-		const date = moment().utc();
+		const date = moment.utc();
 		setSelectedYear(date.year());
 		setSelectedMonth(date.month());
 		setDaysInSelectedMonth(getDaysInMonth(date.year(), date.month()));
+	};
+
+	const selectYear = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const { value } = e.target;
+		setSelectedYear(Number(value));
+	};
+
+	const selectMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const { value } = e.target;
+		setSelectedMonth(Number(value));
 	};
 
 	return (
@@ -149,20 +157,44 @@ const Home = () => {
 			<div className='mb-4 w-full flex flex-col'>
 				<section className='text-base md:text-lg lg:text-xl flex justify-center gap-8 select-none font-semibold'>
 					<Button styleClass='!px-1 !leading-6' cta={setPresentDate}>
-						Current Month
+						Reset Date
 					</Button>
 					<span
-						className='transition-all opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
+						className='transition-all duration-300 opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
 						onClick={decrementMonth}
 					>
 						&#10094;
 					</span>
-					<span className='w-12 text-center'>{selectedYear}</span>
-					<span className='w-28 text-center'>
-						{moment().month(selectedMonth).format('MMMM')}
-					</span>
+					<select
+						name='year'
+						id='year-select'
+						value={selectedYear}
+						onChange={selectYear}
+						className='cursor-pointer bg-transparent hover:text-custom-red transition-all duration-300 z-20'
+					>
+						{Array.from(Array(moment().year() + 3 - 1970).keys()).map(
+							(year, i) => (
+								<option key={year} value={i + 1970}>
+									{year + 1970}
+								</option>
+							)
+						)}
+					</select>
+					<select
+						name='month'
+						id='month-select'
+						value={selectedMonth}
+						onChange={selectMonth}
+						className='cursor-pointer bg-transparent hover:text-custom-red transition-all duration-300 z-20'
+					>
+						{moment.months().map((month, i) => (
+							<option key={month} value={i}>
+								{month}
+							</option>
+						))}
+					</select>
 					<span
-						className='transition-all opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
+						className='transition-all duration-300 opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
 						onClick={incrementMonth}
 					>
 						&#10095;
