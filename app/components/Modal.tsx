@@ -16,7 +16,7 @@ const Modal = ({ children, closeModal }: Props) => {
 						{children}
 					</div>
 					<div
-						className='mb-auto transition-all z-20 cursor-pointer bg-custom-gray hover:bg-custom-primary px-1 border-2 border-l-0 border-custom-secondary rounded-tr-lg rounded-br-lg text-custom-red/75 hover:text-custom-red active:text-custom-red text-2xl shadow shadow-custom-gray-500 modal-close-btn'
+						className='mb-auto transition-all duration-300 z-20 cursor-pointer bg-custom-gray hover:bg-custom-primary px-1 border-2 border-l-0 border-custom-secondary rounded-tr-lg rounded-br-lg text-custom-red/75 hover:text-custom-red active:text-custom-red text-2xl shadow shadow-custom-gray-500 modal-close-btn'
 						onClick={closeModal}
 					/>
 				</div>
