@@ -72,7 +72,6 @@ const CalendarItemWrapper = ({
 				<li
 					key={data.date}
 					className={`
-					${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
 					${
 						data.game_releases.length
 							? 'cursor-pointer hover:z-10 hover:scale-150 transition-all duration-300'
@@ -93,7 +92,12 @@ const CalendarItemWrapper = ({
 								? '!border-custom-blue'
 								: ''
 						}
-						${highlight ? '!shadow-md !shadow-custom-red !border-custom-red' : ''}
+						${data.isCurrentMonth ? '' : 'opacity-50 hover:opacity-100'}
+						${
+							highlight
+								? '!shadow-md !shadow-custom-red !border-custom-red !opacity-100'
+								: ''
+						}
 						${translateDirection ? 'translated-child' : ''}`}
 					>
 						{data.game_releases.length > 1 &&
