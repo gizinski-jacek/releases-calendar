@@ -5,13 +5,13 @@ interface Props {
 
 const Modal = ({ children, closeModal }: Props) => {
 	return (
-		<div className='absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center z-10'>
+		<div className='absolute top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-center z-[75]'>
 			<div className='flex justify-center items-center w-[90%] h-[90%]'>
 				<div
 					className='absolute top-0 left-0 right-0 bottom-0 bg-black/75'
 					onClick={closeModal}
 				/>
-				<div className='w-full max-h-full z-30 flex'>
+				<div className='max-h-full z-30 flex'>
 					<div className='flex flex-col gap-1 bg-custom-secondary border-2 border-custom-secondary rounded-tl-lg rounded-bl-lg rounded-br-lg overflow-y-auto shadow-md shadow-custom-primary'>
 						{children}
 					</div>
