@@ -61,7 +61,7 @@ const Gallery = ({ gallery }: Props) => {
 								alt='Game Image'
 								width={600}
 								height={337}
-								className='w-full h-auto text-center'
+								className='w-full h-auto text-center cursor-pointer'
 								onClick={() => openModal(item.image)}
 							/>
 						</div>
@@ -74,7 +74,7 @@ const Gallery = ({ gallery }: Props) => {
 					&#10095;
 				</div>
 			</div>
-			<div className='flex justify-center items-center gap-1 md:gap-2 lg:gap-3 p-1 pb-4'>
+			<div className='flex justify-center items-center gap-1 md:gap-2 lg:gap-3 p-2'>
 				<div
 					className='text-lg md:text-xl lg:text-2xl box-border cursor-pointer select-none px-1 transition-all duration-300 font-bold text-custom-secondary/60 hover:text-custom-secondary/80 active:text-custom-secondary'
 					onClick={prevSlide}
@@ -108,8 +108,7 @@ const Gallery = ({ gallery }: Props) => {
 					<img
 						src={openImage}
 						alt='Game Image'
-						className='w-full h-auto text-center'
-						onClick={closeModal}
+						className='w-full h-auto text-center cursor-pointer'
 					/>
 				</ModalImage>
 			)}
