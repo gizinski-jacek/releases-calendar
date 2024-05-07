@@ -11,11 +11,9 @@ import {
 	getDaysInMonth,
 	getDaysInNextMonth,
 	getDaysInPrevMonth,
-	getGridItemStyleClass,
 	groupByDate,
 	nextMonthDaysToObj,
 	prevMonthDaysToObj,
-	sortByMetacriticScore,
 } from './lib/utils';
 import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -87,16 +85,12 @@ const Home = () => {
 					daysInSelectedMonth + getDaysInNextMonth(selectedYear, selectedMonth)
 				);
 				const res: AxiosResponse<GameData[]> = await axios.post('/api', {
-					year: selectedYear,
-					month: selectedMonth,
-					date: `${startDate},${endDate}`,
+					startDate,
+					endDate,
 				});
 				const grouped = groupByDate(res.data, selectedYear, selectedMonth);
-				const sortedScores = sortByMetacriticScore(grouped);
-				const sortedDates = sortedScores.sort((a, b) =>
-					a.date.localeCompare(b.date)
-				);
-				setCalendarData(sortedDates);
+				const sorted = grouped.sort((a, b) => a.date.localeCompare(b.date));
+				setCalendarData(sorted);
 				setFetching(false);
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
@@ -131,7 +125,7 @@ const Home = () => {
 		setShowMature(!showMature);
 	};
 
-	const changeHighlithedWeekDay = (value: number) => {
+	const changeHighlightedWeekDay = (value: number) => {
 		highlightWeekDay === value
 			? setHighlightWeekDay(null)
 			: setHighlightWeekDay(value);
@@ -254,7 +248,7 @@ const Home = () => {
 					</Button>
 					<ThemeSwitcher />
 				</section>
-				<ul className='my-3 grid grid-cols-28 gap-4'>
+				<ul className='my-3 grid grid-cols-7 gap-4'>
 					{(
 						(screenIsSmall && moment.weekdaysShort(true)) ||
 						moment.weekdays(true)
@@ -266,20 +260,19 @@ const Home = () => {
 									? '!shadow-md !shadow-custom-red !border-custom-red !bg-custom-blue'
 									: ''
 							}
-							cta={() => changeHighlithedWeekDay(i)}
+							cta={() => changeHighlightedWeekDay(i)}
 						>
 							{day}
 						</Button>
 					))}
 				</ul>
-				<ul className='flex-1 grid grid-cols-28 gap-4'>
+				<ul className='flex-1 grid grid-cols-7 gap-4'>
 					{calendarData &&
 						(showMature ? calendarData : filterMature(calendarData)).map(
 							(item, index, array) => (
 								<CalendarItemWrapper
 									key={item.date}
 									data={item}
-									styleClass={getGridItemStyleClass(item, index, array)}
 									highlight={moment(item.date).weekday() === highlightWeekDay}
 									translateDirection={
 										index + 1 === 1 || (index + 1) % 7 === 1
