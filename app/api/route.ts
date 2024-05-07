@@ -12,20 +12,18 @@ export async function POST(request: Request) {
 			console.error('Provide API key');
 			return;
 		}
-		const { date } = await request.json();
-		if (!date) {
+		const { startDate, endDate } = await request.json();
+		if (!startDate || !endDate) {
 			return new Response('Provide date', { status: 500 });
 		}
-
 		const query = querystring.stringify({
 			key: process.env.API_key,
 			page_size: '40',
-			ordering: 'metacritic',
-			dates: date,
+			dates: `${startDate},${endDate}`,
 		});
 		let results = [] as GameData[];
 		let nextPage: string | null = `${process.env.API_URI}?${query}`;
-		while (nextPage) {
+		while (nextPage && results.length < 120) {
 			const res: AxiosResponse<{
 				count: number;
 				results: GameData[];
