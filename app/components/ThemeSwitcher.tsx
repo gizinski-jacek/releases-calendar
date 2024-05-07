@@ -12,7 +12,7 @@ const ThemeSwitcher = () => {
 			onClick={() => setTheme(currentTheme === 'dark' ? 'light' : 'dark')}
 		>
 			<div
-				className={`w-3 h-3 m-[0.2rem] rounded-lg bg-custom-red transition-all duration-300
+				className={`w-3 h-3 m-[0.2rem] rounded-lg bg-custom-purple transition-all duration-300
 				${currentTheme === 'dark' ? '' : 'translate-x-[1.6rem]'}`}
 			/>
 		</div>
