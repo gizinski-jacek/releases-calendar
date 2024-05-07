@@ -5,17 +5,19 @@
 @layer base {
 	:root {
 		--color-primary: 220 220 220;
-		--color-secondary: 10 10 10;
-		--color-gray: 175 175 175;
+		--color-secondary: 20 20 20;
+		--color-gray: 160 160 160;
+		--color-alt-gray: 200 200 200;
 		--color-blue: 0 125 255;
 		--color-purple: 200 0 200;
 		--color-red: 200 0 0;
 	}
 
 	.dark {
-		--color-primary: 10 10 10;
+		--color-primary: 20 20 20;
 		--color-secondary: 220 220 220;
-		--color-gray: 50 50 50;
+		--color-gray: 60 60 60;
+		--color-alt-gray: 35 35 35;
 		--color-blue: 0 75 255;
 		--color-purple: 125 0 125;
 		--color-red: 255 0 0;
