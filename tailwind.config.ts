@@ -20,6 +20,7 @@ const config: Config = {
 				'custom-primary': 'rgb(var(--color-primary) / <alpha-value>)',
 				'custom-secondary': 'rgb(var(--color-secondary) / <alpha-value>)',
 				'custom-gray': 'rgb(var(--color-gray) / <alpha-value>)',
+				'custom-alt-gray': 'rgb(var(--color-alt-gray) / <alpha-value>)',
 				'custom-blue': 'rgb(var(--color-blue) / <alpha-value>)',
 				'custom-purple': 'rgb(var(--color-purple) / <alpha-value>)',
 				'custom-red': 'rgb(var(--color-red) / <alpha-value>)',
