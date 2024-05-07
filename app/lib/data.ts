@@ -1,4 +1,4 @@
-export const filterTags: string[] = ['sexual-content', 'nsfw'];
+export const filterTags: string[] = ['sexual-content', 'nsfw', 'hentai'];
 
 export const storeLinks: { [key: string]: string } = {
 	steam: 'https://store.steampowered.com/',
