@@ -120,9 +120,11 @@ const CalendarItemWrapper = ({
 				</li>
 				{showModal && data.game_releases.length && (
 					<Modal closeModal={closeModal}>
-						{data.game_releases?.map((game) => (
-							<GameDetailsWrapper key={game.id} game={game} />
-						))}
+						<div className='flex flex-col gap-1 bg-custom-secondary border-2 border-custom-secondary rounded overflow-y-auto shadow-md shadow-custom-primary'>
+							{data.game_releases?.map((game) => (
+								<GameDetailsWrapper key={game.id} game={game} />
+							))}
+						</div>
 					</Modal>
 				)}
 			</>
