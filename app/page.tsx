@@ -19,6 +19,7 @@ import CalendarItemWrapper from './components/wrappers/CalendarDayWrapper';
 import LoadingSpinner from './components/LoadingSpinner';
 import ThemeSwitcher from './components/ThemeSwitcher';
 import Button from './components/reusables/Button';
+import Modal from './components/Modal';
 
 moment.updateLocale('en', {
 	week: {
@@ -148,21 +149,26 @@ const Home = () => {
 		setShowMonthSelectGrid(false);
 	};
 
+	const toggleShowMonthGrid = () => {
+		setShowMonthSelectGrid((prevState) => !prevState);
+		setShowYearSelectGrid(false);
+	};
+
 	const toggleShowYearGrid = () => {
 		setShowYearSelectGrid((prevState) => !prevState);
 		setShowMonthSelectGrid(false);
 	};
 
-	const toggleShowMonthGrid = () => {
-		setShowMonthSelectGrid((prevState) => !prevState);
+	const closeModal = () => {
 		setShowYearSelectGrid(false);
+		setShowMonthSelectGrid(false);
 	};
 
 	return (
 		<main className='flex min-w-[640px] min-h-screen flex-col items-center justify-between px-2 md:py-1 md:px-4 lg:py-2 lg:px-8 xl:py-3 xl:px-12 2xl:py-4 2xl:px-16 relative'>
 			{fetching && <LoadingSpinner />}
 			<div className='mb-4 w-full flex flex-col'>
-				<section className='items-center text-base md:text-lg lg:text-xl flex justify-center gap-5 select-none font-semibold'>
+				<section className='items-center text-base md:text-lg lg:text-xl flex justify-center gap-4 select-none font-semibold'>
 					<Button styleClass='!px-1 !leading-6' cta={setPresentDate}>
 						Reset Date
 					</Button>
@@ -172,7 +178,7 @@ const Home = () => {
 					>
 						&#10094;
 					</span>
-					<div className='relative z-50'>
+					<div className='flex gap-4'>
 						<div
 							className='cursor-pointer hover:bg-custom-gray rounded-lg px-2 py-1 transition-all duration-300'
 							onClick={toggleShowYearGrid}
@@ -180,54 +186,52 @@ const Home = () => {
 							{selectedYear}
 						</div>
 						<div
-							className={`${
-								showYearSelectGrid ? 'grid' : 'hidden'
-							} absolute top-[125%] left-[50%] translate-x-[-50%] grid-cols-10 w-max bg-custom-primary border rounded-lg border-custom-secondary transition-all duration-300`}
-						>
-							{Array.from(
-								new Array(moment().year() + 3 - 1970),
-								(x, i) => moment().year() + 3 - (i + 1970 + 1)
-							).map((year) => (
-								<div
-									key={year + 1970}
-									className={`${
-										year + 1970 === selectedYear
-											? 'text-custom-red'
-											: 'hover:bg-custom-gray'
-									} text-center cursor-pointer rounded-lg p-1 transition-all duration-300 relative`}
-									onClick={() => handleChangeYear(year + 1970)}
-								>
-									{year + 1970}
-								</div>
-							))}
-						</div>
-					</div>
-					<div className='relative z-50'>
-						<div
 							className='cursor-pointer hover:bg-custom-gray rounded-lg px-2 py-1 transition-all duration-300'
 							onClick={toggleShowMonthGrid}
 						>
 							{moment.monthsShort()[selectedMonth]}
 						</div>
-						<div
-							className={`${
-								showMonthSelectGrid ? 'grid' : 'hidden'
-							} absolute top-[125%] left-[50%] translate-x-[-50%] grid-cols-4 w-max bg-custom-primary border rounded-lg border-custom-secondary transition-all duration-300`}
-						>
-							{moment.months().map((month, i) => (
-								<div
-									key={month}
-									className={`${
-										i === selectedMonth
-											? 'text-custom-red'
-											: 'hover:bg-custom-gray'
-									} text-center cursor-pointer rounded-lg p-2 transition-all duration-300 relative`}
-									onClick={() => handleChangeMonth(i)}
-								>
-									{month}
+						{showYearSelectGrid && (
+							<Modal closeModal={closeModal}>
+								<div className='grid grid-cols-10 mb-0 bg-custom-primary border border-2 rounded-lg border-custom-secondary transition-all duration-300'>
+									{Array.from(
+										new Array(moment().year() + 3 - 1970),
+										(x, i) => moment().year() + 3 - (i + 1970 + 1)
+									).map((year) => (
+										<div
+											key={year + 1970}
+											className={`${
+												year + 1970 === selectedYear
+													? 'text-custom-red'
+													: 'hover:bg-custom-gray'
+											} text-center cursor-pointer rounded-lg p-1 transition-all duration-300 relative`}
+											onClick={() => handleChangeYear(year + 1970)}
+										>
+											{year + 1970}
+										</div>
+									))}
 								</div>
-							))}
-						</div>
+							</Modal>
+						)}
+						{showMonthSelectGrid && (
+							<Modal closeModal={closeModal}>
+								<div className='grid grid-cols-4 mb-0 bg-custom-primary border border-2 rounded-lg border-custom-secondary transition-all duration-300'>
+									{moment.months().map((month, i) => (
+										<div
+											key={month}
+											className={`${
+												i === selectedMonth
+													? 'text-custom-red'
+													: 'hover:bg-custom-gray'
+											} text-center cursor-pointer rounded-lg p-2 transition-all duration-300 relative`}
+											onClick={() => handleChangeMonth(i)}
+										>
+											{month}
+										</div>
+									))}
+								</div>
+							</Modal>
+						)}
 					</div>
 					<span
 						className='transition-all hover:bg-custom-gray rounded-lg px-2 py-1 duration-300 opacity-75 hover:opacity-100 active:text-custom-red cursor-pointer'
