@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 			console.error('Provide API URI');
 			return;
 		}
-		if (!process.env.API_key) {
+		if (!process.env.API_KEY) {
 			console.error('Provide API key');
 			return;
 		}
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 			return new Response('Provide date', { status: 500 });
 		}
 		const query = querystring.stringify({
-			key: process.env.API_key,
+			key: process.env.API_KEY,
 			page_size: '40',
 			dates: `${startDate},${endDate}`,
 		});
