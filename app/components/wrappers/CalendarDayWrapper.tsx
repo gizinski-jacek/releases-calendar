@@ -104,14 +104,16 @@ const CalendarItemWrapper = ({
 										: ''
 								}`}
 							>
-								<span className='absolute block top-[-1rem] left-[-1.05rem] md:top-[-1.20rem] md:left-[-1.25rem] lg:top-[-1.35rem] lg:left-[-1.40rem] w-[1.25rem] h-[1.25rem] md:w-[1.5rem] md:h-[1.5rem] lg:w-[1.75rem] lg:h-[1.75rem] text-center rotate-[-45deg]'>
+								<span className='absolute block top-[-1rem] left-[-1.05rem] md:top-[-1.2rem] md:left-[-1.25rem] lg:top-[-1.4rem] lg:left-[-1.5rem] w-[1.25rem] h-[1.25rem] md:w-[1.5rem] md:h-[1.5rem] lg:w-[1.75rem] lg:h-[1.75rem] text-center rotate-[-45deg]'>
 									{data.dayOfMonth}
 								</span>
 							</div>
 							{data.game_releases.length > 0 && (
 								<div className='absolute opacity-80 ms-auto self-end relative transition-all duration-300 border-[0.85rem] lg:border-[0.95rem] xl:border-[1.1rem] border-green-700 border-t-transparent border-l-transparent text-white font-semibold text-xs lg:text-sm xl:text-base'>
-									<span className='absolute bottom-[-0.75rem] right-[-0.75rem] lg:bottom-[-0.95rem] lg:right-[-0.95rem] xl:bottom-[-1.15rem] xl:right-[-1.15rem] w-[1rem] h-[1rem] lg:w-[1.25rem] lg:h-[1.25rem] xl:w-[1.5rem] xl:h-[1.5rem] text-center rotate-[-45deg]'>
-										{data.game_releases.length}
+									<span className='absolute bottom-[-0.75rem] right-[-0.8rem] lg:bottom-[-0.9rem] lg:right-[-1rem] xl:bottom-[-1.15rem] xl:right-[-1.15rem] w-[1rem] h-[1rem] lg:w-[1.25rem] lg:h-[1.25rem] xl:w-[1.5rem] xl:h-[1.5rem] text-center rotate-[-45deg]'>
+										{data.game_releases.length > 9
+											? '9+'
+											: data.game_releases.length}
 									</span>
 								</div>
 							)}
