@@ -4,11 +4,7 @@ import { GameData } from '../lib/types';
 
 export async function POST(request: Request) {
 	try {
-		if (!process.env.API_URI) {
-			console.error('Provide API URI');
-			return;
-		}
-		if (!process.env.API_KEY) {
+		if (!process.env.RAWG_IO_API_KEY) {
 			console.error('Provide API key');
 			return;
 		}
@@ -17,12 +13,12 @@ export async function POST(request: Request) {
 			return new Response('Provide date', { status: 500 });
 		}
 		const query = querystring.stringify({
-			key: process.env.API_KEY,
+			key: process.env.RAWG_IO_API_KEY,
 			page_size: '40',
 			dates: `${startDate},${endDate}`,
 		});
 		let results = [] as GameData[];
-		let nextPage: string | null = `${process.env.API_URI}?${query}`;
+		let nextPage: string | null = `https://api.rawg.io/api/games?${query}`;
 		while (nextPage && results.length < 120) {
 			const res: AxiosResponse<{
 				count: number;
