@@ -56,17 +56,23 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Don't forget to add **.env** file with these environment variables for the app:
 
 ```
-API_URI
-API_KEY
+RAWG_IO_API_KEY
 ```
 
 ## Features
 
-- PLACEHOLDER
+- Calendar with all weeks of the month, including days from previous and next month
+  - Styled appropriately for ease of understanding
+  - Shows number of releases on each day
+  - Lets user highligh specific day of the week
+  - Includes Modal rendering all games in a list with gallery of games screenshots, release date, genre, platform and store availability
+- Controls for choosing date and resetting to current date
+- Toggle for rendering R18 rated content
+- Toggle for light/dark mode
 
 ## Status
 
-Project status: **_ON HOLD_**
+Project status: **_FINISHED_**
 
 ## Contact
 
