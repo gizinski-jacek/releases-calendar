@@ -1,5 +1,5 @@
 {
-	"name": "releases-calendar",
+	"name": "games-releases-calendar",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -29,7 +29,7 @@
 		"typescript": "^5"
 	},
 	"engines": {
-		"node": "18.16.1",
-		"npm": "9.5.1"
+		"node": "22.9.0",
+		"npm": "10.8.3"
 	}
 }
