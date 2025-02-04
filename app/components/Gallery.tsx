@@ -105,8 +105,10 @@ const Gallery = ({ gallery }: Props) => {
 			</div>
 			{openImage && (
 				<ModalImage closeModal={closeModal}>
-					<img
+					<Image
 						src={openImage}
+						width={600}
+						height={337}
 						alt='Game Image'
 						className='w-full h-auto text-center cursor-pointer'
 					/>
@@ -115,7 +117,13 @@ const Gallery = ({ gallery }: Props) => {
 		</>
 	) : (
 		<div className='relative select-none bg-empty text-center'>
-			<Image src={bgEmpty} alt='No game image' />
+			<Image
+				src={bgEmpty}
+				width={600}
+				height={337}
+				alt='No game image'
+				className='w-full h-auto text-center'
+			/>
 		</div>
 	);
 };
