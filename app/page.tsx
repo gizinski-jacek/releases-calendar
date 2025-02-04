@@ -29,7 +29,6 @@ moment.updateLocale('en', {
 
 const Home = () => {
 	const [fetching, setFetching] = useState<boolean>(true);
-	const [showMature, setShowMature] = useState<boolean>(false);
 	const [selectedYear, setSelectedYear] = useState<number>(moment.utc().year());
 	const [selectedMonth, setSelectedMonth] = useState<number>(
 		moment.utc().month()
@@ -91,7 +90,8 @@ const Home = () => {
 				});
 				const grouped = groupByDate(res.data, selectedYear, selectedMonth);
 				const sorted = grouped.sort((a, b) => a.date.localeCompare(b.date));
-				setCalendarData(sorted);
+				const filtered = filterMature(sorted);
+				setCalendarData(filtered);
 				setFetching(false);
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
@@ -120,10 +120,6 @@ const Home = () => {
 		} else {
 			setSelectedMonth(selectedMonth + 1);
 		}
-	};
-
-	const toggleMature = () => {
-		setShowMature(!showMature);
 	};
 
 	const changeHighlightedWeekDay = (value: number) => {
@@ -239,17 +235,6 @@ const Home = () => {
 					>
 						&#10095;
 					</span>
-					<Button
-						styleClass={`!px-1 !leading-6 hover:opacity-100 active:opacity-100
-					${
-						showMature
-							? 'opacity-100 !bg-custom-red !border-custom-secondary !text-custom-primary'
-							: 'opacity-50'
-					}`}
-						cta={toggleMature}
-					>
-						+18
-					</Button>
 					<ThemeSwitcher />
 				</section>
 				<ul className='my-3 grid grid-cols-7 gap-4'>
@@ -271,23 +256,20 @@ const Home = () => {
 					))}
 				</ul>
 				<ul className='flex-1 grid grid-cols-7 gap-4'>
-					{calendarData &&
-						(showMature ? calendarData : filterMature(calendarData)).map(
-							(item, index, array) => (
-								<CalendarItemWrapper
-									key={item.date}
-									data={item}
-									highlight={moment(item.date).weekday() === highlightWeekDay}
-									translateDirection={
-										index + 1 === 1 || (index + 1) % 7 === 1
-											? 'right'
-											: (index + 1) % 7 === 0
-											? 'left'
-											: undefined
-									}
-								/>
-							)
-						)}
+					{calendarData.map((item, index) => (
+						<CalendarItemWrapper
+							key={item.date}
+							data={item}
+							highlight={moment(item.date).weekday() === highlightWeekDay}
+							translateDirection={
+								index + 1 === 1 || (index + 1) % 7 === 1
+									? 'right'
+									: (index + 1) % 7 === 0
+									? 'left'
+									: undefined
+							}
+						/>
+					))}
 				</ul>
 			</div>
 		</main>
